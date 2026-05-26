@@ -86,6 +86,47 @@ function onInteraction() {
   if (BEH.primaryState !== 'idle') BEH.primaryState = 'idle';
 }
 
+// ── Procedural animation FX (squash/stretch, hop, tilt) ──────────
+const animFX = { type: null, start: 0, duration: 0 };
+
+function triggerFX(type) {
+  animFX.type     = type;
+  animFX.start    = performance.now();
+  animFX.duration = type === 'levelup' ? 750 : type === 'feed' ? 520 : 420;
+}
+
+function getFX() {
+  if (!animFX.type) return { sx: 1, sy: 1, dy: 0, rot: 0 };
+  const p = (performance.now() - animFX.start) / animFX.duration;
+  if (p >= 1) { animFX.type = null; return { sx: 1, sy: 1, dy: 0, rot: 0 }; }
+
+  switch (animFX.type) {
+    case 'pet': {
+      const e = Math.sin(p * Math.PI);
+      return { sx: 1 + e * 0.10, sy: 1 - e * 0.08, dy: -e * 3, rot: 0 };
+    }
+    case 'feed': {
+      const e = Math.abs(Math.sin(p * Math.PI * 2));
+      return { sx: 1 + e * 0.07, sy: 1 - e * 0.06, dy: 0, rot: 0 };
+    }
+    case 'bathe': {
+      const e = Math.sin(p * Math.PI);
+      return { sx: 1 - e * 0.05, sy: 1 + e * 0.08, dy: -e * 2, rot: Math.sin(p * Math.PI * 3) * 0.04 };
+    }
+    case 'levelup': {
+      if (p < 0.22) {
+        const k = p / 0.22;
+        return { sx: 1 + 0.18 * k, sy: 1 - 0.22 * k, dy: 0, rot: 0 };
+      } else {
+        const k = (p - 0.22) / 0.78;
+        const spring = Math.sin(k * Math.PI);
+        return { sx: 1 - 0.10 * spring, sy: 1 + 0.20 * spring, dy: -spring * 14, rot: 0 };
+      }
+    }
+  }
+  return { sx: 1, sy: 1, dy: 0, rot: 0 };
+}
+
 // ── Canvas ────────────────────────────────────────────────────────
 const canvas = document.getElementById('widget-canvas');
 const ctx    = canvas.getContext('2d');
@@ -592,6 +633,7 @@ function onFeed(food, cardEl) {
   // Eating animation + food particle
   spawnFood(food.icon);
   awardXP(10);
+  triggerFX('feed');
   setAnim('eating');
   setTimeout(() => {
     setAnim(idleAnim());
@@ -677,6 +719,7 @@ function onPet() {
   onInteraction();
   gs.pet?.();
   awardXP(8);
+  triggerFX('pet');
   setAnim('happy');
   spawnSparkles();
   showToast(`${creature.name.toUpperCase()} LOVES THE ATTENTION! ✨`);
@@ -689,6 +732,7 @@ function onBathe() {
   onInteraction();
   gs.bathe?.();
   awardXP(12);
+  triggerFX('bathe');
   showToast(`${creature.name.toUpperCase()} IS SQUEAKY CLEAN!`);
   saveState();
   closePanel();
@@ -788,6 +832,7 @@ function awardXP(amount) {
   spawnXP(amount);
   updateLevelDisplay();
   if (result.leveled) {
+    triggerFX('levelup');
     spawnLevelUp();
     spawnSparkles();
     // Flash the level label gold
@@ -976,8 +1021,54 @@ function drawAmbientMotes() {
   ctx.globalAlpha = 1;
 }
 
+// ── Parallax depth layers (procedural silhouettes) ────────────────
+const PARALLAX_CFG = {
+  cave: {
+    far:  { color: 'rgba(20, 12, 44, 0.85)', yBase: 0.35, amp: 18, freq: 0.012, panPxPerSec: 3,  jitter: 4  },
+    mid:  { color: 'rgba(10, 6, 28, 0.92)',  yBase: 0.55, amp: 14, freq: 0.020, panPxPerSec: 7,  jitter: 6  },
+  },
+  meadow: {
+    far:  { color: 'rgba(40, 60, 78, 0.55)', yBase: 0.42, amp: 24, freq: 0.008, panPxPerSec: 2,  jitter: 3  },
+    mid:  { color: 'rgba(28, 44, 58, 0.78)', yBase: 0.60, amp: 18, freq: 0.014, panPxPerSec: 5,  jitter: 4  },
+  },
+};
+
+function drawParallaxLayer(cfg, t) {
+  const W = canvas.width;
+  const H = canvas.height;
+  const yBase = cfg.yBase * H;
+  const panX  = (t * cfg.panPxPerSec) % 200;
+
+  ctx.fillStyle = cfg.color;
+  ctx.beginPath();
+  ctx.moveTo(0, H);
+  // Ridge silhouette via summed sines + deterministic jitter
+  const step = 6;
+  for (let x = 0; x <= W + step; x += step) {
+    const wx = x + panX;
+    const y =
+      yBase +
+      Math.sin(wx * cfg.freq) * cfg.amp +
+      Math.sin(wx * cfg.freq * 2.3 + 1.7) * (cfg.amp * 0.4) +
+      Math.sin(wx * 0.07) * cfg.jitter;
+    ctx.lineTo(x, y);
+  }
+  ctx.lineTo(W, H);
+  ctx.closePath();
+  ctx.fill();
+}
+
+function drawParallax() {
+  const cfg = PARALLAX_CFG[creature.habitat.id];
+  if (!cfg) return;
+  const t = performance.now() / 1000;
+  drawParallaxLayer(cfg.far, t);
+  drawParallaxLayer(cfg.mid, t);
+}
+
 function drawEnv() {
   drawStars();
+  drawParallax();
   drawAmbientMotes();
   const els = ENV_ELEMENTS[creature.habitat.id];
   if (!els) return;
@@ -1198,11 +1289,13 @@ function draw() {
   const bobAmp  = currentAnim === 'shower' ? 0 : (BEH.primaryState === 'sleeping' ? 1 : 2.5);
   const bobHz   = BEH.primaryState === 'sleeping' ? 600 : 900;
   const bob     = Math.sin(performance.now() / bobHz * Math.PI) * bobAmp;
-  const cy      = posY * canvas.height + bob;
+  const fx      = getFX();
+  const cy      = posY * canvas.height + bob + fx.dy;
 
   ctx.save();
   ctx.translate(cx, cy);
-  ctx.scale(facingLeft ? -1 : 1, 1);
+  if (fx.rot) ctx.rotate(fx.rot);
+  ctx.scale((facingLeft ? -1 : 1) * fx.sx, fx.sy);
   ctx.drawImage(img, -w / 2, -h, w, h);
   ctx.restore();
 
