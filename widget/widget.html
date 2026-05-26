@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WILDS Widget</title>
+  <link rel="stylesheet" href="widget.css" />
+</head>
+<body>
+
+  <!-- Hover bar -->
+  <div id="action-bar">
+    <button class="act-btn small" id="btn-quit" title="Quit">✕</button>
+    <button class="act-btn small" id="btn-pin" title="Toggle desktop mode">📌</button>
+    <div id="action-buttons">
+      <button class="act-pill" data-panel="feed">Feed</button>
+      <button class="act-pill" data-panel="train">Train</button>
+      <button class="act-pill" id="btn-pet">Pet</button>
+      <button class="act-pill" id="btn-bathe">Clean</button>
+      <button class="act-pill" data-panel="stats">Stats</button>
+      <button class="act-pill" data-panel="habitat">Habitat</button>
+    </div>
+    <span class="creature-label" id="creature-label">VEX</span>
+  </div>
+
+  <!-- Sliding action panel -->
+  <div id="action-panel">
+
+    <!-- Feed panel -->
+    <div class="panel-page" id="panel-feed">
+      <div class="panel-title">What should <span id="feed-name">Vex</span> eat?</div>
+      <div class="food-grid" id="food-grid"></div>
+    </div>
+
+    <!-- Stats panel -->
+    <div class="panel-page" id="panel-stats">
+      <div class="stats-grid">
+        <div class="needs-col">
+          <div class="stat-row"><span class="stat-label">HUNGER</span><div class="stat-bar"><div class="stat-fill" id="bar-hunger"></div></div><span class="stat-val" id="val-hunger">--</span></div>
+          <div class="stat-row"><span class="stat-label">ENERGY</span><div class="stat-bar"><div class="stat-fill" id="bar-energy"></div></div><span class="stat-val" id="val-energy">--</span></div>
+          <div class="stat-row"><span class="stat-label">MOOD</span><div class="stat-bar"><div class="stat-fill" id="bar-mood"></div></div><span class="stat-val" id="val-mood">--</span></div>
+          <div class="stat-row"><span class="stat-label">HYGIENE</span><div class="stat-bar"><div class="stat-fill" id="bar-hygiene"></div></div><span class="stat-val" id="val-hygiene">--</span></div>
+        </div>
+        <div class="evo-col">
+          <div class="evo-label">EVOLUTION</div>
+          <div class="evo-paths" id="evo-paths"></div>
+          <div class="panel-footer-btns">
+            <button id="btn-achievements" class="panel-footer-btn">🏆 Achiev.</button>
+            <button id="btn-settings"     class="panel-footer-btn">⚙ Settings</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Habitat panel -->
+    <div class="panel-page" id="panel-habitat">
+      <div class="panel-title">Habitat</div>
+      <div id="habitat-info" class="habitat-info">
+        <div class="habitat-name" id="habitat-name"></div>
+        <div class="habitat-desc" id="habitat-desc"></div>
+        <div class="habitat-creatures" id="habitat-creatures"></div>
+      </div>
+    </div>
+
+    <!-- Train panel -->
+    <div class="panel-page" id="panel-train">
+      <div class="panel-title">Training</div>
+      <div class="train-content">
+        <div id="train-prompt" class="train-prompt">TAP WHEN YOU SEE IT</div>
+        <button id="train-tap" class="train-tap">●</button>
+        <div id="train-result" class="train-result"></div>
+      </div>
+    </div>
+
+    <!-- Achievements panel -->
+    <div class="panel-page" id="panel-achievements">
+      <div class="panel-nav">
+        <button class="panel-back-btn" data-panel="stats">← Stats</button>
+        <span class="panel-nav-title">Achievements</span>
+      </div>
+      <div id="achievement-list" class="achievement-list"></div>
+    </div>
+
+    <!-- Settings panel -->
+    <div class="panel-page" id="panel-settings">
+      <div class="panel-nav">
+        <button class="panel-back-btn" data-panel="stats">← Stats</button>
+        <span class="panel-nav-title">Settings</span>
+      </div>
+      <div class="settings-list">
+        <div class="setting-row">
+          <span class="setting-label">DESKTOP MODE</span>
+          <button id="setting-desktop-toggle" class="setting-toggle">OFF</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Ground strip with canvas -->
+  <div id="ground-strip">
+    <canvas id="widget-canvas"></canvas>
+    <!-- Time-of-day tint overlay — sits above canvas, below UI dots -->
+    <div id="time-overlay"></div>
+
+    <!-- Needs chips -->
+    <div id="needs-row">
+      <div class="need-chip" id="need-hunger"  title="Hunger">
+        <span class="need-icon">🍖</span><span class="need-bar"><span class="need-bar-fill"></span></span>
+      </div>
+      <div class="need-chip" id="need-energy"  title="Energy">
+        <span class="need-icon">⚡</span><span class="need-bar"><span class="need-bar-fill"></span></span>
+      </div>
+      <div class="need-chip" id="need-mood"    title="Mood">
+        <span class="need-icon">💜</span><span class="need-bar"><span class="need-bar-fill"></span></span>
+      </div>
+      <div class="need-chip" id="need-hygiene" title="Hygiene">
+        <span class="need-icon">🚿</span><span class="need-bar"><span class="need-bar-fill"></span></span>
+      </div>
+    </div>
+
+    <!-- Day counter -->
+    <div id="day-label">DAY 1</div>
+
+    <!-- Level + XP bar -->
+    <div id="xp-row">
+      <span id="lvl-label">LVL 1</span>
+      <div id="xp-bar-wrap">
+        <div id="xp-bar-fill"></div>
+      </div>
+    </div>
+
+    <!-- Mood bubble -->
+    <div id="mood-bubble" class="hidden"></div>
+
+    <!-- Toast -->
+    <div id="widget-toast" class="hidden"></div>
+  </div>
+
+  <script type="module" src="widget.js"></script>
+</body>
+</html>

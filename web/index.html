@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0f0e17" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>WILDS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles/main.css" />
+</head>
+<body>
+  <div id="app">
+
+    <!-- ─── TITLE SCREEN ──────────────────────────────────────── -->
+    <div id="screen-title" class="screen">
+      <h1 class="title-logo">WILDS</h1>
+      <p class="title-tagline">raise something wild</p>
+
+      <p class="choose-text">Choose your companion</p>
+
+      <div class="creature-options">
+        <button class="creature-option" data-creature="vex">
+          <div class="creature-preview">
+            <img src="assets/vex2/idle_0.png" alt="Vex" class="title-sprite" />
+          </div>
+          <span class="creature-name">VEX</span>
+          <span class="creature-type">Trickster · Shadow</span>
+        </button>
+        <button class="creature-option" data-creature="aura">
+          <div class="creature-preview">
+            <img src="assets/aura/idle_0.png" alt="Aura" class="title-sprite" />
+          </div>
+          <span class="creature-name">AURA</span>
+          <span class="creature-type">Wisp · Nature</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ─── GAME SCREEN ───────────────────────────────────────── -->
+    <div id="screen-game" class="screen">
+
+      <!-- Top HUD -->
+      <div id="hud-top">
+        <div>
+          <div id="wild-name">—</div>
+          <div id="wild-stage">—</div>
+        </div>
+        <button class="action-btn" data-action="stats" style="padding:4px 8px;">
+          <span>📊</span>
+        </button>
+      </div>
+
+      <!-- Habitat / Canvas -->
+      <div id="habitat-container">
+        <canvas id="game-canvas"></canvas>
+      </div>
+
+      <!-- Needs Bars -->
+      <div id="needs-bars">
+        <div class="need-row">
+          <span class="need-icon">🍖</span>
+          <div class="need-bar-track">
+            <div class="need-bar" id="bar-hunger" style="width:100%"></div>
+          </div>
+        </div>
+        <div class="need-row">
+          <span class="need-icon">😊</span>
+          <div class="need-bar-track">
+            <div class="need-bar" id="bar-mood" style="width:100%"></div>
+          </div>
+        </div>
+        <div class="need-row">
+          <span class="need-icon">⚡</span>
+          <div class="need-bar-track">
+            <div class="need-bar" id="bar-energy" style="width:100%"></div>
+          </div>
+        </div>
+        <div class="need-row">
+          <span class="need-icon">💧</span>
+          <div class="need-bar-track">
+            <div class="need-bar" id="bar-hygiene" style="width:100%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div id="action-buttons">
+        <button class="action-btn" data-action="feed">
+          <span>🍖</span>
+          <label>Feed</label>
+        </button>
+        <button class="action-btn" data-action="train">
+          <span>⚔️</span>
+          <label>Train</label>
+        </button>
+        <button class="action-btn" data-action="bathe">
+          <span>🛁</span>
+          <label>Bathe</label>
+        </button>
+        <button class="action-btn" data-action="rest">
+          <span>💤</span>
+          <label>Rest</label>
+        </button>
+      </div>
+
+    </div><!-- /screen-game -->
+
+    <!-- ─── OVERLAY ───────────────────────────────────────────── -->
+    <div id="overlay" class="hidden"></div>
+
+    <!-- ─── FEED PANEL ────────────────────────────────────────── -->
+    <div id="panel-feed" class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Feed</span>
+        <button class="panel-close">✕</button>
+      </div>
+      <div id="food-grid"></div>
+    </div>
+
+    <!-- ─── TRAIN PANEL ───────────────────────────────────────── -->
+    <div id="panel-train" class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Train</span>
+        <button class="panel-close">✕</button>
+      </div>
+
+      <div id="minigame-container">
+        <p id="minigame-instruction">Hold the button to charge power.<br>Release in the golden zone!</p>
+
+        <div id="power-bar-container">
+          <div id="power-zone-good"></div>
+          <div id="power-zone-perfect"></div>
+          <div id="power-indicator"></div>
+        </div>
+
+        <button id="minigame-btn">HOLD TO CHARGE</button>
+
+        <div id="minigame-result"></div>
+      </div>
+    </div>
+
+    <!-- ─── STATS PANEL ───────────────────────────────────────── -->
+    <div id="panel-stats" class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Stats</span>
+        <button class="panel-close">✕</button>
+      </div>
+      <div id="stats-content"></div>
+      <div id="evolution-path"></div>
+    </div>
+
+    <!-- ─── TOAST ─────────────────────────────────────────────── -->
+    <div id="toast" class="hidden"></div>
+
+  </div><!-- /app -->
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

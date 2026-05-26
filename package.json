@@ -1,0 +1,30 @@
+{
+  "name": "wilds",
+  "version": "0.1.0",
+  "description": "WILDS — Desktop Creature Companion",
+  "main": "electron/main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder --mac"
+  },
+  "devDependencies": {
+    "canvas": "^3.2.3",
+    "electron": "^31.7.7",
+    "electron-builder": "^24.0.0",
+    "gif-frames": "^1.0.1"
+  },
+  "build": {
+    "appId": "com.wilds.companion",
+    "productName": "WILDS",
+    "mac": {
+      "category": "public.app-category.games",
+      "target": "dmg"
+    },
+    "files": [
+      "electron/**/*",
+      "widget/**/*",
+      "web/assets/**/*",
+      "web/src/**/*"
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "id": "bf0d05c6-0b3e-45cc-8540-b2bd0d75085d",
+  "name": null,
+  "prompt": "small underground pond puddle, reflective water, stone rim",
+  "size": {
+    "width": 48,
+    "height": 48
+  },
+  "directions": 1,
+  "view": null,
+  "rotations": {
+    "unknown": "rotations/unknown.png"
+  },
+  "animations": {},
+  "export_version": "1.0",
+  "export_date": "2026-04-28T18:28:21.693055"
+}

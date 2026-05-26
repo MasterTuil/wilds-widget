@@ -1,0 +1,446 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+/* ─── Variables ───────────────────────────────────────────────── */
+:root {
+  --bg:            #0f0e17;
+  --bg-mid:        #1c1b2e;
+  --bg-panel:      #16152a;
+  --text:          #f0ece2;
+  --text-dim:      #6e6a7c;
+  --border:        rgba(255,255,255,0.07);
+  --creature-color: #9b7fd4;
+
+  /* Habitat theming — overridden per creature via JS */
+  --habitat-primary:  #9b7fd4;
+  --habitat-glow:     rgba(155,127,212,0.35);
+  --habitat-mid:      #16122a;
+  --habitat-border:   rgba(155,127,212,0.18);
+
+  --bar-good: #4ecb71;
+  --bar-warn: #e8b04b;
+  --bar-crit: #e84b4b;
+
+  --font-pixel: 'Press Start 2P', monospace;
+  --font-ui:    -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --radius:  12px;
+  --radius-sm: 6px;
+}
+
+/* ─── Reset ───────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%; height: 100%;
+  background: #07060f;
+  display: flex; justify-content: center; align-items: center;
+  overflow: hidden;
+  font-family: var(--font-ui);
+  color: var(--text);
+}
+
+/* ─── App Shell ───────────────────────────────────────────────── */
+#app {
+  position: relative;
+  width: min(390px, 100vw);
+  height: min(844px, 100vh);
+  background: var(--bg);
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  border-radius: clamp(0px, 2vw, 24px);
+  box-shadow: 0 40px 100px rgba(0,0,0,0.7);
+}
+
+/* ─── Screens ─────────────────────────────────────────────────── */
+.screen {
+  position: absolute; inset: 0;
+  display: none; flex-direction: column;
+}
+.screen.active { display: flex; }
+
+/* ─── TITLE SCREEN ────────────────────────────────────────────── */
+#screen-title {
+  background: radial-gradient(ellipse at 50% 30%, #1e1535 0%, #0f0e17 70%);
+  align-items: center; justify-content: center;
+  gap: 0;
+  padding: 32px 24px;
+}
+
+.title-logo {
+  font-family: var(--font-pixel);
+  font-size: 36px;
+  letter-spacing: 8px;
+  color: var(--text);
+  text-shadow: 0 0 40px var(--creature-color), 0 0 80px rgba(155,127,212,0.3);
+  margin-bottom: 8px;
+}
+
+.title-tagline {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  margin-bottom: 48px;
+  font-style: italic;
+}
+
+.choose-text {
+  font-family: var(--font-pixel);
+  font-size: 7px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+
+.creature-options {
+  display: flex; gap: 16px;
+}
+
+.creature-option {
+  flex: 1;
+  background: var(--bg-mid);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 16px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.2s ease;
+  display: flex; flex-direction: column; align-items: center; gap: 10px;
+}
+.creature-option:hover {
+  border-color: var(--creature-color);
+  background: rgba(155,127,212,0.08);
+  transform: translateY(-2px);
+}
+
+.creature-preview {
+  width: 80px; height: 80px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 40px;
+  overflow: hidden;
+}
+
+.title-sprite {
+  width: 64px; height: 64px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+.creature-name {
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  letter-spacing: 2px;
+}
+
+.creature-type {
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+/* ─── GAME SCREEN ─────────────────────────────────────────────── */
+#screen-game {
+  background: var(--bg);
+}
+
+/* Top HUD */
+#hud-top {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 20px 10px;
+  border-bottom: 1px solid var(--habitat-border);
+  flex-shrink: 0;
+  background: var(--bg);
+}
+
+#wild-name {
+  font-family: var(--font-pixel);
+  font-size: 11px;
+  letter-spacing: 1px;
+  color: var(--habitat-primary);
+}
+
+#wild-stage {
+  font-size: 10px;
+  color: var(--text-dim);
+}
+
+/* Habitat */
+#habitat-container {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background-color: #0d0c1a;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+}
+
+/* Soft vignette over habitat bg so creature reads clearly */
+#habitat-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 110%, var(--habitat-glow) 0%, transparent 65%),
+    linear-gradient(to top, rgba(0,0,0,0.35) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+#game-canvas {
+  position: relative;
+  z-index: 2;
+}
+
+#game-canvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  image-rendering: pixelated;
+  z-index: 2;
+}
+
+/* Needs bars */
+#needs-bars {
+  padding: 12px 20px 8px;
+  display: flex; flex-direction: column; gap: 8px;
+  background: var(--bg-mid);
+  border-top: 1px solid var(--habitat-border);
+  flex-shrink: 0;
+}
+
+.need-row {
+  display: flex; align-items: center; gap: 10px;
+}
+
+.need-icon { font-size: 14px; width: 20px; text-align: center; }
+
+.need-bar-track {
+  flex: 1; height: 6px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 3px; overflow: hidden;
+}
+
+.need-bar {
+  height: 100%;
+  background: var(--bar-good);
+  border-radius: 3px;
+  transition: width 0.5s ease, background 0.3s ease;
+}
+
+/* Action buttons */
+#action-buttons {
+  display: flex; justify-content: space-around;
+  padding: 12px 8px 16px;
+  background: var(--bg-mid);
+  border-top: 1px solid var(--habitat-border);
+  flex-shrink: 0;
+}
+
+.action-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  background: none; border: none; cursor: pointer;
+  color: var(--text-dim);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  transition: all 0.15s ease;
+  font-family: var(--font-ui);
+}
+.action-btn:hover, .action-btn:active {
+  background: var(--habitat-glow);
+  color: var(--text);
+}
+.action-btn span { font-size: 22px; }
+.action-btn label { font-size: 9px; letter-spacing: 0.5px; cursor: pointer; }
+
+/* ─── PANELS ──────────────────────────────────────────────────── */
+.panel {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  background: var(--bg-panel);
+  border-top: 1px solid var(--border);
+  border-radius: var(--radius) var(--radius) 0 0;
+  padding: 20px;
+  transform: translateY(100%);
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  z-index: 100;
+  max-height: 70%;
+  overflow-y: auto;
+}
+.panel.open { transform: translateY(0); }
+
+.panel-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 20px;
+}
+
+.panel-title {
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  letter-spacing: 1px;
+}
+
+.panel-close {
+  background: rgba(255,255,255,0.08);
+  border: none; color: var(--text);
+  width: 28px; height: 28px;
+  border-radius: 50%; cursor: pointer; font-size: 12px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s;
+}
+.panel-close:hover { background: rgba(255,255,255,0.15); }
+
+/* Overlay */
+#overlay {
+  position: absolute; inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 99;
+  backdrop-filter: blur(2px);
+}
+#overlay.hidden { display: none; }
+
+/* ─── FOOD GRID ───────────────────────────────────────────────── */
+.food-category { margin-bottom: 16px; }
+
+.food-cat-label {
+  font-size: 10px; color: var(--text-dim);
+  margin-bottom: 8px; letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.food-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.food-item {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  cursor: pointer; color: var(--text);
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  min-width: 80px;
+  transition: all 0.15s;
+  font-family: var(--font-ui);
+}
+.food-item:hover { background: rgba(255,255,255,0.1); border-color: var(--creature-color); }
+
+.food-icon { font-size: 24px; }
+.food-name { font-size: 9px; text-align: center; }
+.food-rarity { font-size: 8px; color: var(--text-dim); }
+.rarity-uncommon { color: #4b9de8; }
+.rarity-rare     { color: #e8b04b; }
+
+/* ─── MINI-GAME ───────────────────────────────────────────────── */
+#minigame-container {
+  display: flex; flex-direction: column; align-items: center; gap: 20px;
+}
+
+#minigame-instruction {
+  font-size: 11px; color: var(--text-dim);
+  text-align: center; line-height: 1.6;
+}
+
+#power-bar-container {
+  position: relative;
+  width: 100%; height: 20px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 10px; overflow: hidden;
+}
+
+#power-zone-good {
+  position: absolute;
+  left: 55%; width: 25%; height: 100%;
+  background: rgba(78,203,113,0.3);
+}
+
+#power-zone-perfect {
+  position: absolute;
+  left: 65%; width: 10%; height: 100%;
+  background: rgba(232,176,75,0.6);
+}
+
+#power-indicator {
+  position: absolute;
+  left: 0; top: 0; bottom: 0; width: 4px;
+  background: white;
+  border-radius: 2px;
+  transition: left 0.05s linear;
+}
+
+#minigame-btn {
+  background: var(--creature-color);
+  color: white; border: none;
+  padding: 16px 40px;
+  border-radius: var(--radius);
+  font-family: var(--font-pixel);
+  font-size: 9px; letter-spacing: 1px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.1s, opacity 0.1s;
+  box-shadow: 0 4px 20px rgba(155,127,212,0.4);
+}
+#minigame-btn:active { transform: scale(0.97); opacity: 0.9; }
+
+#minigame-result {
+  font-family: var(--font-pixel);
+  font-size: 10px; min-height: 20px;
+  opacity: 0; transition: opacity 0.2s;
+}
+#minigame-result.result-show { opacity: 1; }
+
+/* ─── STATS PANEL ─────────────────────────────────────────────── */
+.stat-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+
+.stat-row {
+  display: flex; align-items: center; gap: 10px;
+}
+.stat-icon { font-size: 14px; width: 20px; }
+.stat-name { font-size: 10px; width: 32px; color: var(--text-dim); }
+.stat-bar-track {
+  flex: 1; height: 6px;
+  background: rgba(255,255,255,0.08); border-radius: 3px; overflow: hidden;
+}
+.stat-bar {
+  height: 100%; background: var(--creature-color);
+  border-radius: 3px; transition: width 0.4s ease;
+}
+.stat-val { font-size: 10px; width: 28px; text-align: right; color: var(--text-dim); }
+
+.days-alive {
+  font-size: 9px; color: var(--text-dim);
+  text-align: center; padding: 8px;
+  border-top: 1px solid var(--border); margin-top: 8px;
+}
+
+.evo-title {
+  font-family: var(--font-pixel); font-size: 8px;
+  letter-spacing: 1px; color: var(--text-dim);
+  margin: 16px 0 12px;
+}
+
+.evo-row {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: 10px 0;
+  border-top: 1px solid var(--border);
+}
+.evo-secret .evo-name { color: var(--text-dim); letter-spacing: 2px; }
+.evo-name { font-size: 10px; font-weight: 600; min-width: 90px; }
+.evo-prob { font-size: 9px; color: var(--bar-warn); min-width: 36px; }
+.evo-hint { font-size: 9px; color: var(--text-dim); line-height: 1.5; }
+
+/* ─── TOAST ───────────────────────────────────────────────────── */
+#toast {
+  position: absolute;
+  top: 72px; left: 50%; transform: translateX(-50%);
+  background: rgba(30,29,48,0.95);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 8px 18px;
+  font-size: 11px;
+  white-space: nowrap;
+  z-index: 200;
+  backdrop-filter: blur(8px);
+  transition: opacity 0.3s;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+}
+#toast.hidden { opacity: 0; pointer-events: none; }
+.toast-warn { border-color: var(--bar-warn) !important; }
+.toast-ok   { border-color: rgba(78,203,113,0.4) !important; }

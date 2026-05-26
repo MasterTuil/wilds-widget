@@ -1,0 +1,17 @@
+{
+  "id": "795fc70f-ab43-43ff-88e5-2b63f9d121c0",
+  "name": null,
+  "prompt": "large mossy boulder, cracked surface, side view, cave palette",
+  "size": {
+    "width": 96,
+    "height": 96
+  },
+  "directions": 1,
+  "view": null,
+  "rotations": {
+    "unknown": "rotations/unknown.png"
+  },
+  "animations": {},
+  "export_version": "1.0",
+  "export_date": "2026-04-28T18:21:51.544530"
+}

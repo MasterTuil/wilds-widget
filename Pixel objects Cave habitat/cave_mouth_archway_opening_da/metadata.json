@@ -1,0 +1,17 @@
+{
+  "id": "9e09bf61-778f-44ce-82cb-436f8360fef9",
+  "name": null,
+  "prompt": "cave mouth archway opening, dark interior, jagged stone frame",
+  "size": {
+    "width": 96,
+    "height": 96
+  },
+  "directions": 1,
+  "view": null,
+  "rotations": {
+    "unknown": "rotations/unknown.png"
+  },
+  "animations": {},
+  "export_version": "1.0",
+  "export_date": "2026-04-28T18:28:09.546529"
+}

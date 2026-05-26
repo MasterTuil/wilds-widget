@@ -1,0 +1,17 @@
+{
+  "id": "d603ea6b-2d79-4d0b-8b1b-bf9d4c80be0b",
+  "name": null,
+  "prompt": "pixel art habitat prop, side view, dark moody cave palette with cool blue and teal accents, soft glow lighting, transparent background, consistent pixel density, clean silhouette, no text, no characters\n",
+  "size": {
+    "width": 96,
+    "height": 96
+  },
+  "directions": 1,
+  "view": null,
+  "rotations": {
+    "unknown": "rotations/unknown.png"
+  },
+  "animations": {},
+  "export_version": "1.0",
+  "export_date": "2026-04-28T18:22:43.724007"
+}

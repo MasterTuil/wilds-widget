@@ -1,0 +1,770 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+
+:root {
+  --habitat-primary: #9b7fd4;
+  --habitat-glow:    rgba(155, 127, 212, 0.4);
+  --ground-top:      #1a1232;
+  --ground-bot:      #0d0a1e;
+  --panel-bg:        rgba(10, 8, 24, 0.88);
+}
+
+html, body {
+  width:      520px;
+  height:     380px;
+  overflow:   hidden;
+  background: transparent;
+  font-family: 'Courier New', monospace;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* ── Panel footer buttons (achievements + settings) ───── */
+.panel-footer-btns {
+  display:   flex;
+  gap:       6px;
+  margin-top: auto;
+  padding-top: 4px;
+}
+
+.panel-footer-btn {
+  flex:       1;
+  background: transparent;
+  border:     none;
+  color:      rgba(200, 185, 255, 0.35);
+  font-size:  8px;
+  font-family: 'Courier New', monospace;
+  cursor:     pointer;
+  padding:    4px 0;
+  letter-spacing: 0.05em;
+  transition: color 0.2s;
+  -webkit-app-region: no-drag;
+  text-align: center;
+}
+
+.panel-footer-btn:hover { color: var(--habitat-primary); }
+
+/* ── Panel nav (back button row) ──────────────────────── */
+.panel-nav {
+  display:     flex;
+  align-items: center;
+  gap:         8px;
+  margin-bottom: 8px;
+  flex-shrink:   0;
+}
+
+.panel-back-btn {
+  background:  transparent;
+  border:      none;
+  color:       rgba(200, 185, 255, 0.4);
+  font-size:   8px;
+  font-family: 'Courier New', monospace;
+  cursor:      pointer;
+  padding:     0;
+  letter-spacing: 0.5px;
+  transition:  color 0.2s;
+  -webkit-app-region: no-drag;
+}
+
+.panel-back-btn:hover { color: var(--habitat-primary); }
+
+.panel-nav-title {
+  font-size:     8px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color:         rgba(200, 185, 255, 0.5);
+}
+
+/* ── Achievements panel ───────────────────────────────── */
+.achievement-list {
+  display:        flex;
+  flex-direction: column;
+  gap:            4px;
+  overflow-y:     auto;
+  flex:           1;
+}
+
+.achievement-item {
+  display:     flex;
+  align-items: center;
+  gap:         8px;
+  padding:     4px 6px;
+  border-radius: 6px;
+  background:  rgba(255, 255, 255, 0.02);
+  border:      1px solid rgba(155, 127, 212, 0.08);
+  flex-shrink: 0;
+}
+
+.achievement-item.unlocked {
+  background:   rgba(155, 127, 212, 0.1);
+  border-color: rgba(155, 127, 212, 0.28);
+}
+
+.achievement-icon {
+  font-size:  13px;
+  width:      18px;
+  text-align: center;
+  filter:     grayscale(1);
+  opacity:    0.3;
+  flex-shrink: 0;
+}
+
+.achievement-item.unlocked .achievement-icon {
+  filter:  none;
+  opacity: 1;
+}
+
+.achievement-info { flex: 1; min-width: 0; }
+
+.achievement-name {
+  font-size:     8px;
+  letter-spacing: 1px;
+  color:         rgba(200, 185, 255, 0.45);
+  text-transform: uppercase;
+  line-height:   1.2;
+}
+
+.achievement-item.unlocked .achievement-name {
+  color: rgba(200, 185, 255, 0.95);
+}
+
+.achievement-desc {
+  font-size:  7px;
+  color:      rgba(200, 185, 255, 0.25);
+  line-height: 1.3;
+  margin-top: 1px;
+}
+
+.achievement-item.unlocked .achievement-desc {
+  color: rgba(200, 185, 255, 0.5);
+}
+
+/* ── Settings panel ───────────────────────────────────── */
+.settings-list {
+  display:        flex;
+  flex-direction: column;
+  gap:            2px;
+  flex:           1;
+}
+
+.setting-row {
+  display:         flex;
+  align-items:     center;
+  justify-content: space-between;
+  padding:         6px 0;
+  border-bottom:   1px solid rgba(155, 127, 212, 0.08);
+}
+
+.setting-label {
+  font-size:     9px;
+  letter-spacing: 1.5px;
+  color:         rgba(200, 185, 255, 0.65);
+}
+
+.setting-toggle {
+  font-size:   8px;
+  letter-spacing: 1px;
+  padding:     3px 10px;
+  border-radius: 8px;
+  background:  rgba(155, 127, 212, 0.08);
+  border:      1px solid rgba(155, 127, 212, 0.2);
+  color:       rgba(200, 180, 255, 0.45);
+  cursor:      pointer;
+  font-family: 'Courier New', monospace;
+  transition:  background 0.15s, color 0.15s, border-color 0.15s;
+  -webkit-app-region: no-drag;
+}
+
+.setting-toggle.on {
+  background:   rgba(155, 127, 212, 0.28);
+  border-color: var(--habitat-primary);
+  color:        #fff;
+}
+
+/* ── Habitat panel ────────────────────────────────────── */
+.habitat-info {
+  display:        flex;
+  flex-direction: column;
+  gap:            6px;
+  padding:        4px 0;
+}
+
+.habitat-name {
+  font-size:   11px;
+  font-weight: bold;
+  color:       var(--habitat-primary);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.habitat-desc {
+  font-size:   8px;
+  color:       rgba(200, 185, 255, 0.65);
+  line-height: 1.5;
+}
+
+.habitat-creatures {
+  font-size:   8px;
+  color:       rgba(200, 185, 255, 0.5);
+  line-height: 1.6;
+  margin-top:  4px;
+  border-top:  1px solid rgba(200, 185, 255, 0.1);
+  padding-top: 6px;
+}
+
+/* ── Hover bar ────────────────────────────────────────── */
+#action-bar {
+  position:   absolute;
+  bottom:     200px;
+  left:       0;
+  right:      0;
+  height:     38px;
+  display:    flex;
+  align-items: center;
+  justify-content: space-between;
+  padding:    0 12px;
+  background: rgba(10, 8, 24, 0.88);
+  backdrop-filter: blur(10px);
+  border-top:    1px solid rgba(155, 127, 212, 0.2);
+  border-bottom: 1px solid rgba(155, 127, 212, 0.08);
+  z-index:    50;
+  opacity:    0;
+  transform:  translateY(20px);
+  transition: opacity 0.2s 0.6s, transform 0.2s 0.6s;
+  -webkit-app-region: drag;
+}
+
+#action-bar.visible {
+  opacity:   1;
+  transform: translateY(0);
+  transition: opacity 0.18s, transform 0.18s;
+}
+
+#action-buttons {
+  display:    flex;
+  gap:        6px;
+  -webkit-app-region: no-drag;
+}
+
+.act-pill {
+  background:   rgba(155, 127, 212, 0.12);
+  border:       1px solid rgba(155, 127, 212, 0.25);
+  color:        rgba(200, 180, 255, 0.8);
+  font-family:  'Courier New', monospace;
+  font-size:    10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding:      4px 10px;
+  border-radius: 12px;
+  cursor:       pointer;
+  transition:   background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.act-pill:hover,
+.act-pill.active {
+  background:   rgba(155, 127, 212, 0.3);
+  border-color: var(--habitat-primary);
+  color:        #fff;
+}
+
+.act-btn {
+  -webkit-app-region: no-drag;
+  background:   transparent;
+  border:       none;
+  color:        rgba(200, 180, 255, 0.4);
+  font-size:    12px;
+  cursor:       pointer;
+  padding:      4px 6px;
+  border-radius: 4px;
+  transition:   color 0.2s;
+  line-height:  1;
+}
+
+.act-btn:hover { color: #e05555; }
+#btn-pin { font-size: 11px; }
+
+.creature-label {
+  font-size:    10px;
+  letter-spacing: 3px;
+  color:        var(--habitat-primary);
+  opacity:      0.7;
+  -webkit-app-region: drag;
+}
+
+/* ── Action panel ─────────────────────────────────────── */
+#action-panel {
+  position:   absolute;
+  bottom:     238px;   /* sits above the action bar (200 + 38) */
+  left:       0;
+  right:      0;
+  height:     140px;
+  background: var(--panel-bg);
+  backdrop-filter: blur(12px);
+  border-top:    1px solid rgba(155, 127, 212, 0.2);
+  border-bottom: 1px solid rgba(155, 127, 212, 0.08);
+  z-index:    40;
+  overflow:   hidden;
+
+  /* hidden — slides down into bar */
+  transform:  translateY(60px);
+  opacity:    0;
+  transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity   0.22s ease;
+  pointer-events: none;
+}
+
+#action-panel.open {
+  transform:  translateY(0);
+  opacity:    1;
+  pointer-events: all;
+}
+
+.panel-page {
+  display:    none;
+  flex-direction: column;
+  height:     100%;
+  padding:    14px 16px 12px;
+}
+
+.panel-page.active { display: flex; }
+
+.panel-title {
+  font-size:    10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color:        rgba(220, 205, 255, 0.9);
+  margin-bottom: 12px;
+}
+
+/* ── Food grid ────────────────────────────────────────── */
+.food-grid {
+  display:    grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap:        8px;
+  flex:       1;
+}
+
+.food-card {
+  display:    flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap:        4px;
+  background: rgba(255, 255, 255, 0.04);
+  border:     1px solid rgba(155, 127, 212, 0.15);
+  border-radius: 8px;
+  padding:    8px 4px;
+  cursor:     pointer;
+  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+}
+
+.food-card:hover {
+  background:   rgba(155, 127, 212, 0.15);
+  border-color: var(--habitat-primary);
+  transform:    translateY(-2px);
+}
+
+.food-card:active { transform: translateY(0); }
+
+.food-card.fed {
+  background:   rgba(155, 127, 212, 0.25);
+  border-color: var(--habitat-primary);
+  pointer-events: none;
+}
+
+.food-icon  { font-size: 22px; line-height: 1; }
+.food-name  {
+  font-size:  8px;
+  letter-spacing: 0.5px;
+  color:      rgba(200, 180, 255, 0.6);
+  text-align: center;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+/* ── Stats panel ──────────────────────────────────────── */
+.stats-grid {
+  display:  flex;
+  gap:      16px;
+  height:   100%;
+}
+
+.needs-col {
+  display:        flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex:           1;
+}
+
+.stat-row {
+  display:     flex;
+  align-items: center;
+  gap:         8px;
+}
+
+.stat-label {
+  font-size:     9px;
+  letter-spacing: 1.5px;
+  color:         rgba(200, 185, 255, 0.85);
+  width:         50px;
+  flex-shrink:   0;
+}
+
+.stat-bar {
+  flex:          1;
+  height:        5px;
+  background:    rgba(255,255,255,0.1);
+  border-radius: 3px;
+  overflow:      hidden;
+}
+
+.stat-fill {
+  height:        100%;
+  background:    var(--habitat-primary);
+  border-radius: 3px;
+  transition:    width 0.6s ease, background 0.4s;
+}
+
+.stat-fill.warn { background: #f0c040; }
+.stat-fill.crit { background: #e05555; }
+
+.stat-val {
+  font-size:  10px;
+  color:      rgba(255, 255, 255, 0.9);
+  width:      26px;
+  text-align: right;
+  flex-shrink: 0;
+  font-weight: bold;
+}
+
+.evo-col {
+  width:          148px;
+  flex-shrink:    0;
+  display:        flex;
+  flex-direction: column;
+  gap:            8px;
+}
+
+.evo-label {
+  font-size:     8px;
+  letter-spacing: 2px;
+  color:         rgba(200, 185, 255, 0.7);
+}
+
+.evo-paths {
+  display:        flex;
+  flex-direction: column;
+  gap:            7px;
+}
+
+.evo-path {
+  display:     flex;
+  align-items: center;
+  gap:         6px;
+}
+
+.evo-path-bar {
+  flex:          1;
+  height:        4px;
+  background:    rgba(255,255,255,0.08);
+  border-radius: 2px;
+  overflow:      hidden;
+}
+
+.evo-path-fill {
+  height:        100%;
+  background:    var(--habitat-primary);
+  border-radius: 2px;
+  opacity:       0.8;
+}
+
+.evo-path-pct {
+  font-size:  9px;
+  color:      rgba(255, 255, 255, 0.85);
+  width:      28px;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.evo-path-name {
+  font-size:  8px;
+  color:      rgba(200, 180, 255, 0.75);
+  width:      46px;
+  flex-shrink: 0;
+  text-align: left;
+  letter-spacing: 0.3px;
+}
+
+/* ── Train panel ──────────────────────────────────────── */
+.train-content {
+  display:    flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap:        12px;
+  flex:       1;
+}
+
+.train-prompt {
+  font-size:    9px;
+  letter-spacing: 2px;
+  color:        rgba(155, 127, 212, 0.5);
+  text-transform: uppercase;
+}
+
+.train-tap {
+  width:      54px;
+  height:     54px;
+  border-radius: 50%;
+  background: rgba(155, 127, 212, 0.1);
+  border:     2px solid rgba(155, 127, 212, 0.3);
+  color:      var(--habitat-primary);
+  font-size:  20px;
+  cursor:     pointer;
+  transition: background 0.1s, transform 0.1s, border-color 0.1s;
+}
+
+.train-tap:hover {
+  background:   rgba(155, 127, 212, 0.2);
+  border-color: var(--habitat-primary);
+}
+
+.train-tap.flash {
+  background: var(--habitat-primary);
+  transform:  scale(1.15);
+  color:      #fff;
+}
+
+.train-result {
+  font-size:    11px;
+  letter-spacing: 1px;
+  color:        var(--habitat-primary);
+  height:       16px;
+  text-align:   center;
+}
+
+/* ── Ground strip ─────────────────────────────────────── */
+#ground-strip {
+  position:   absolute;
+  bottom:     0;
+  left:       0;
+  right:      0;
+  height:     200px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--ground-top) 25%,
+    var(--ground-bot) 100%
+  );
+  border-top: 1px solid var(--habitat-primary);
+  box-shadow: 0 -12px 48px var(--habitat-glow), 0 -2px 8px var(--habitat-glow);
+  overflow:   hidden;
+}
+
+#ground-strip::before {
+  content:  '';
+  position: absolute;
+  inset:    0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0,0,0,0.08) 3px,
+    rgba(0,0,0,0.08) 4px
+  );
+  pointer-events: none;
+}
+
+#widget-canvas {
+  position:   absolute;
+  inset:      0;
+  width:      100%;
+  height:     100%;
+  image-rendering: pixelated;
+}
+
+/* ── Time-of-day overlay ──────────────────────────────── */
+#time-overlay {
+  position:       absolute;
+  inset:          0;
+  pointer-events: none;
+  z-index:        6;
+  background:     transparent;
+  opacity:        0;
+  transition:     background 90s ease, opacity 90s ease;
+}
+
+/* ── Ground strip border transitions for time of day ─── */
+#ground-strip {
+  transition: border-top-color 90s ease, box-shadow 90s ease;
+}
+
+/* ── Needs chips ──────────────────────────────────────── */
+#needs-row {
+  position:   absolute;
+  top:        8px;
+  left:       10px;
+  display:    flex;
+  gap:        5px;
+  z-index:    10;
+}
+
+.need-chip {
+  display:       flex;
+  align-items:   center;
+  gap:           4px;
+  padding:       3px 6px 3px 5px;
+  border-radius: 8px;
+  background:    rgba(10, 8, 24, 0.55);
+  border:        1px solid rgba(155, 127, 212, 0.18);
+  backdrop-filter: blur(6px);
+  transition:    background 0.4s, border-color 0.4s, box-shadow 0.4s;
+}
+
+.need-icon {
+  font-size:   9px;
+  line-height: 1;
+  filter:      saturate(0.85) brightness(1.05);
+  opacity:     0.9;
+  transition:  opacity 0.4s, filter 0.4s;
+}
+
+.need-bar {
+  display:       block;
+  width:         18px;
+  height:        3px;
+  background:    rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow:      hidden;
+}
+
+.need-bar-fill {
+  display:       block;
+  height:        100%;
+  width:         100%;
+  background:    var(--habitat-primary);
+  border-radius: 2px;
+  transition:    width 0.6s ease, background 0.4s;
+}
+
+.need-chip.warn {
+  border-color: rgba(240, 192, 64, 0.45);
+  box-shadow:   0 0 6px rgba(240, 192, 64, 0.18);
+}
+.need-chip.warn .need-bar-fill { background: #f0c040; }
+
+.need-chip.crit {
+  border-color: rgba(224, 85, 85, 0.6);
+  box-shadow:   0 0 10px rgba(224, 85, 85, 0.28);
+  animation:    chip-pulse 1.4s ease-in-out infinite;
+}
+.need-chip.crit .need-bar-fill { background: #e05555; }
+.need-chip.crit .need-icon     { filter: drop-shadow(0 0 3px rgba(224,85,85,0.7)); }
+
+@keyframes chip-pulse {
+  0%, 100% { box-shadow: 0 0 6px  rgba(224, 85, 85, 0.20); }
+  50%      { box-shadow: 0 0 14px rgba(224, 85, 85, 0.55); }
+}
+
+/* ── Day label ────────────────────────────────────────── */
+#day-label {
+  position:   absolute;
+  top:        10px;
+  right:      12px;
+  font-size:  8px;
+  letter-spacing: 2px;
+  color:      var(--habitat-primary);
+  opacity:    0.4;
+  z-index:    10;
+}
+
+/* ── Level + XP bar ───────────────────────────────────── */
+#xp-row {
+  position:    absolute;
+  top:         24px;
+  right:       12px;
+  display:     flex;
+  align-items: center;
+  gap:         6px;
+  z-index:     10;
+}
+
+#lvl-label {
+  font-size:     8px;
+  letter-spacing: 2px;
+  color:         var(--habitat-primary);
+  opacity:       0.55;
+  transition:    color 0.3s, opacity 0.3s;
+}
+
+#xp-bar-wrap {
+  width:        44px;
+  height:       3px;
+  background:   rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow:     hidden;
+}
+
+#xp-bar-fill {
+  height:        100%;
+  width:         0%;
+  background:    var(--habitat-primary);
+  border-radius: 2px;
+  transition:    width 0.5s ease;
+}
+
+@keyframes lvlup-flash {
+  0%   { opacity: 0;   transform: scale(0.8); }
+  35%  { opacity: 1;   transform: scale(1.25); }
+  100% { opacity: 0.7; transform: scale(1); }
+}
+
+#lvl-label.leveled-up {
+  color:     #ffe080;
+  opacity:   1;
+  animation: lvlup-flash 0.7s ease forwards;
+}
+
+#xp-bar-fill.leveled-up {
+  background: #ffe080;
+  transition: background 0.3s;
+}
+
+/* ── Mood bubble ──────────────────────────────────────── */
+#mood-bubble {
+  position:    absolute;
+  bottom:      180px;
+  left:        50%;
+  transform:   translateX(-50%);
+  font-size:   16px;
+  z-index:     20;
+  pointer-events: none;
+  transition:  opacity 0.4s;
+}
+
+#mood-bubble.hidden { opacity: 0; }
+
+/* ── Toast ────────────────────────────────────────────── */
+#widget-toast {
+  position:    absolute;
+  bottom:      8px;
+  left:        50%;
+  transform:   translateX(-50%);
+  background:  rgba(10, 8, 24, 0.9);
+  border:      1px solid rgba(155, 127, 212, 0.3);
+  border-radius: 12px;
+  padding:     5px 14px;
+  font-size:   9px;
+  letter-spacing: 1.5px;
+  color:       rgba(200, 180, 255, 0.9);
+  white-space: nowrap;
+  z-index:     30;
+  pointer-events: none;
+  transition:  opacity 0.3s;
+}
+
+#widget-toast.hidden { opacity: 0; }

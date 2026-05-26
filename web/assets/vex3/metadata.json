@@ -1,0 +1,112 @@
+{
+  "character": {
+    "id": "53cc71e7-9ed3-4b25-a32e-fa5223dc3022",
+    "name": "Vex v3",
+    "prompt": "Small mystical fox-like creature with an oversized white mask covering its face. The mask has dark slits for eyes. Soft purple-and-black fur. Long fluffy tail with white tip. Big paws. Tamagotchi-cute proportions. Pixel art, soft pastel palette.",
+    "size": {
+      "width": 124,
+      "height": 124
+    },
+    "template_id": "mannequin",
+    "directions": 8,
+    "view": "side",
+    "created_at": "2026-04-28T03:58:08.739238+00:00"
+  },
+  "frames": {
+    "rotations": {
+      "south": "rotations/south.png",
+      "south-east": "rotations/south-east.png",
+      "east": "rotations/east.png",
+      "north-east": "rotations/north-east.png",
+      "north": "rotations/north.png",
+      "north-west": "rotations/north-west.png",
+      "west": "rotations/west.png",
+      "south-west": "rotations/south-west.png"
+    },
+    "animations": {
+      "Breathing_Idle-fb852d9d": {
+        "south": [
+          "animations/Breathing_Idle-fb852d9d/south/frame_000.png",
+          "animations/Breathing_Idle-fb852d9d/south/frame_001.png",
+          "animations/Breathing_Idle-fb852d9d/south/frame_002.png",
+          "animations/Breathing_Idle-fb852d9d/south/frame_003.png"
+        ]
+      },
+      "Walking-e680e13d": {
+        "west": [
+          "animations/Walking-e680e13d/west/frame_000.png",
+          "animations/Walking-e680e13d/west/frame_001.png",
+          "animations/Walking-e680e13d/west/frame_002.png",
+          "animations/Walking-e680e13d/west/frame_003.png",
+          "animations/Walking-e680e13d/west/frame_004.png",
+          "animations/Walking-e680e13d/west/frame_005.png"
+        ],
+        "east": [
+          "animations/Walking-e680e13d/east/frame_000.png",
+          "animations/Walking-e680e13d/east/frame_001.png",
+          "animations/Walking-e680e13d/east/frame_002.png",
+          "animations/Walking-e680e13d/east/frame_003.png",
+          "animations/Walking-e680e13d/east/frame_004.png",
+          "animations/Walking-e680e13d/east/frame_005.png"
+        ],
+        "south-east": [
+          "animations/Walking-e680e13d/south-east/frame_000.png",
+          "animations/Walking-e680e13d/south-east/frame_001.png",
+          "animations/Walking-e680e13d/south-east/frame_002.png",
+          "animations/Walking-e680e13d/south-east/frame_003.png",
+          "animations/Walking-e680e13d/south-east/frame_004.png",
+          "animations/Walking-e680e13d/south-east/frame_005.png"
+        ],
+        "south-west": [
+          "animations/Walking-e680e13d/south-west/frame_000.png",
+          "animations/Walking-e680e13d/south-west/frame_001.png",
+          "animations/Walking-e680e13d/south-west/frame_002.png",
+          "animations/Walking-e680e13d/south-west/frame_003.png",
+          "animations/Walking-e680e13d/south-west/frame_004.png",
+          "animations/Walking-e680e13d/south-west/frame_005.png"
+        ],
+        "north-east": [
+          "animations/Walking-e680e13d/north-east/frame_000.png",
+          "animations/Walking-e680e13d/north-east/frame_001.png",
+          "animations/Walking-e680e13d/north-east/frame_002.png",
+          "animations/Walking-e680e13d/north-east/frame_003.png",
+          "animations/Walking-e680e13d/north-east/frame_004.png",
+          "animations/Walking-e680e13d/north-east/frame_005.png"
+        ],
+        "north-west": [
+          "animations/Walking-e680e13d/north-west/frame_000.png",
+          "animations/Walking-e680e13d/north-west/frame_001.png",
+          "animations/Walking-e680e13d/north-west/frame_002.png",
+          "animations/Walking-e680e13d/north-west/frame_003.png",
+          "animations/Walking-e680e13d/north-west/frame_004.png",
+          "animations/Walking-e680e13d/north-west/frame_005.png"
+        ],
+        "north": [
+          "animations/Walking-e680e13d/north/frame_000.png",
+          "animations/Walking-e680e13d/north/frame_001.png",
+          "animations/Walking-e680e13d/north/frame_002.png",
+          "animations/Walking-e680e13d/north/frame_003.png",
+          "animations/Walking-e680e13d/north/frame_004.png",
+          "animations/Walking-e680e13d/north/frame_005.png"
+        ],
+        "south": [
+          "animations/Walking-e680e13d/south/frame_000.png",
+          "animations/Walking-e680e13d/south/frame_001.png",
+          "animations/Walking-e680e13d/south/frame_002.png",
+          "animations/Walking-e680e13d/south/frame_003.png",
+          "animations/Walking-e680e13d/south/frame_004.png",
+          "animations/Walking-e680e13d/south/frame_005.png"
+        ]
+      },
+      "Lead_Jab-cc43b7a7": {
+        "west": [
+          "animations/Lead_Jab-cc43b7a7/west/frame_000.png",
+          "animations/Lead_Jab-cc43b7a7/west/frame_001.png",
+          "animations/Lead_Jab-cc43b7a7/west/frame_002.png"
+        ]
+      }
+    }
+  },
+  "export_version": "2.0",
+  "export_date": "2026-04-28T04:20:13.500138"
+}

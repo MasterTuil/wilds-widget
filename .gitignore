@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor / OS
+.vscode/
+.idea/
+*.swp
+
+# Build / output
+dist/
+build/
+graphify-out/
+
+# Local saves (Electron writes user state)
+save.json
+*.local.json
