@@ -18,9 +18,23 @@ html, body {
   height:     380px;
   overflow:   hidden;
   background: transparent;
-  font-family: 'Courier New', monospace;
+  font-family: 'IBM Plex Mono', 'Courier New', ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum", "calt" 0;
   user-select: none;
   -webkit-user-select: none;
+}
+
+/* ── Grain overlay (premium surface texture) ─────────── */
+#grain {
+  position:       fixed;
+  inset:          0;
+  pointer-events: none;
+  z-index:        9999;
+  opacity:        0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.55 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  background-size: 160px 160px;
 }
 
 /* ── Panel footer buttons (achievements + settings) ───── */
@@ -37,7 +51,7 @@ html, body {
   border:     none;
   color:      rgba(200, 185, 255, 0.35);
   font-size:  8px;
-  font-family: 'Courier New', monospace;
+  font-family: 'IBM Plex Mono', 'Courier New', ui-monospace, monospace;
   cursor:     pointer;
   padding:    4px 0;
   letter-spacing: 0.05em;
@@ -62,7 +76,7 @@ html, body {
   border:      none;
   color:       rgba(200, 185, 255, 0.4);
   font-size:   8px;
-  font-family: 'Courier New', monospace;
+  font-family: 'IBM Plex Mono', 'Courier New', ui-monospace, monospace;
   cursor:      pointer;
   padding:     0;
   letter-spacing: 0.5px;
@@ -174,7 +188,7 @@ html, body {
   border:      1px solid rgba(155, 127, 212, 0.2);
   color:       rgba(200, 180, 255, 0.45);
   cursor:      pointer;
-  font-family: 'Courier New', monospace;
+  font-family: 'IBM Plex Mono', 'Courier New', ui-monospace, monospace;
   transition:  background 0.15s, color 0.15s, border-color 0.15s;
   -webkit-app-region: no-drag;
 }
@@ -254,7 +268,7 @@ html, body {
   background:   rgba(155, 127, 212, 0.12);
   border:       1px solid rgba(155, 127, 212, 0.25);
   color:        rgba(200, 180, 255, 0.8);
-  font-family:  'Courier New', monospace;
+  font-family:  'IBM Plex Mono', 'Courier New', ui-monospace, monospace;
   font-size:    10px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
@@ -269,7 +283,10 @@ html, body {
   background:   rgba(155, 127, 212, 0.3);
   border-color: var(--habitat-primary);
   color:        #fff;
+  transform:    translateY(-1px);
 }
+
+.act-pill:active { transform: translateY(0) scale(0.97); transition: transform 0.06s; }
 
 .act-btn {
   -webkit-app-region: no-drag;
@@ -349,6 +366,8 @@ html, body {
 }
 
 .food-card {
+  position:   relative;
+  overflow:   hidden;
   display:    flex;
   flex-direction: column;
   align-items: center;
@@ -359,7 +378,20 @@ html, body {
   border-radius: 8px;
   padding:    8px 4px;
   cursor:     pointer;
-  transition: background 0.15s, border-color 0.15s, transform 0.1s;
+  transition: background 0.15s, border-color 0.15s, transform 0.18s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.food-card::before {
+  content: '';
+  position: absolute;
+  inset:    0;
+  border-radius: inherit;
+  background: radial-gradient(120px circle at var(--mx, 50%) var(--my, 50%),
+                              rgba(200, 180, 255, 0.22),
+                              transparent 60%);
+  opacity:    0;
+  transition: opacity 0.2s;
+  pointer-events: none;
 }
 
 .food-card:hover {
@@ -368,7 +400,9 @@ html, body {
   transform:    translateY(-2px);
 }
 
-.food-card:active { transform: translateY(0); }
+.food-card:hover::before { opacity: 1; }
+
+.food-card:active { transform: translateY(0) scale(0.96); transition: transform 0.06s; }
 
 .food-card.fed {
   background:   rgba(155, 127, 212, 0.25);
