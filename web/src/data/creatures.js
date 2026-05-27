@@ -96,8 +96,9 @@ export const CREATURES = {
       walk_southeast: ['assets/_v2/meadow/walk_east_frame0.png','assets/_v2/meadow/walk_east_frame1.png','assets/_v2/meadow/walk_east_frame2.png','assets/_v2/meadow/walk_east_frame3.png'],
       walk_northwest: ['assets/_v2/meadow/walk_east_frame0.png','assets/_v2/meadow/walk_east_frame1.png','assets/_v2/meadow/walk_east_frame2.png','assets/_v2/meadow/walk_east_frame3.png'],
       walk_southwest: ['assets/_v2/meadow/walk_east_frame0.png','assets/_v2/meadow/walk_east_frame1.png','assets/_v2/meadow/walk_east_frame2.png','assets/_v2/meadow/walk_east_frame3.png'],
-      // 2-frame happy cycle — anchor + bounce pose. Procedural squash handles the energy.
-      happy:     ['assets/_v2/meadow/ANCHOR_LOCKED_south.png','assets/_v2/meadow/happy_frame1.png'],
+      // Single anchor frame — procedural squash + sparkles supply ALL the motion.
+      // Zero sprite swap = zero visual chaos.
+      happy:     ['assets/_v2/meadow/ANCHOR_LOCKED_south.png'],
       eating:    ['assets/_v2/meadow/eating_frame0.png','assets/_v2/meadow/eating_frame1.png','assets/_v2/meadow/eating_frame2.png','assets/_v2/meadow/eating_frame3.png'],
       sad:       ['assets/_v2/meadow/sad_frame0.png','assets/_v2/meadow/sad_frame1.png','assets/_v2/meadow/sad_frame2.png','assets/_v2/meadow/sad_frame3.png'],
     },
