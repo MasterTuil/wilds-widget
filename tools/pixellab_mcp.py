@@ -114,16 +114,23 @@ def tool_call(name: str, arguments: dict) -> dict:
 
 # ── High-level ops ──────────────────────────────────────────────────────────
 
-def cmd_create(description: str, name: str | None = None):
+def cmd_create(description: str, name: str | None = None,
+               body_type: str = "quadruped", template: str = "cat"):
+    """
+    Default body_type=quadruped, template=cat. Use for Tamagotchi-style pets.
+    For tall bipedal characters override with body_type=humanoid.
+    """
     initialize()
     args = {
         "description": description,
-        "body_type": "humanoid",
+        "body_type": body_type,
         "n_directions": 8,
         "mode": "standard",
         "size": 64,
         "view": "side",
     }
+    if body_type == "quadruped":
+        args["template"] = template
     if name:
         args["name"] = name
     res = tool_call("create_character", args)
@@ -142,6 +149,18 @@ def cmd_walk(character_id: str):
         "character_id": character_id,
         "template_animation_id": "walk",
         "directions": ["south", "south-east", "east", "north-east", "north"],
+    })
+    print(json.dumps(res, indent=2))
+
+
+def cmd_template(character_id: str, template_id: str, dirs: str = "south"):
+    """Queue any template animation by ID. dirs is comma-separated list."""
+    initialize()
+    directions = [d.strip() for d in dirs.split(",")]
+    res = tool_call("animate_character", {
+        "character_id": character_id,
+        "template_animation_id": template_id,
+        "directions": directions,
     })
     print(json.dumps(res, indent=2))
 
@@ -200,6 +219,8 @@ if __name__ == "__main__":
         cmd_status(sys.argv[2])
     elif cmd == "walk":
         cmd_walk(sys.argv[2])
+    elif cmd == "template":
+        cmd_template(sys.argv[2], sys.argv[3], sys.argv[4] if len(sys.argv) > 4 else "south")
     elif cmd == "action":
         cmd_action(sys.argv[2], sys.argv[3], sys.argv[4])
     elif cmd == "list":

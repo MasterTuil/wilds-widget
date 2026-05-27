@@ -128,13 +128,41 @@ Don't be cheap with retries.
 - Expanded wander zone (creatures use full canvas vertical range)
 - Reduced foods to 3 (one per category) maps to 3 evolution branches
 
-### Generated but pending (in `web/assets/_v3/leafy/` or `_v2/meadow/`)
-- **Leafy v3 character (4232a9d5-7244-4a5e-b361-568c4d4d2fb7)** —
-  CURRENTLY PROCESSING via official MCP. 8 directions, full anim sheet
-  queued (walk + idle + eat + sad + sleep + train). Status polling
-  running in background as of session end.
-- Older Leafy v2 assets in `web/assets/_v2/meadow/` (anchor + skeleton frames
-  via the v1 REST endpoint) — keep until v3 lands as fallback.
+### Leafy character iterations — three attempts, none final
+
+| # | character_id | body_type / template | Result | State |
+|---|---|---|---|---|
+| 1 | `4232a9d5-7244-4a5e-b361-568c4d4d2fb7` | humanoid | **DELETED.** "String bean E.T." — tall green alien, wrong vibe entirely. | Removed from Pixellab dashboard. Stale files in `web/assets/_v3/leafy/4232a9d5/` |
+| 2 | `d65f0145-fd1f-49dd-82e5-844ef14e1db1` | quadruped + template=cat | Cute green cat with leaf on head. User: **"boring, I wanted a CREATURE not a cat"** | Still on Pixellab; animations were processing when session ended; rotations in `web/assets/_v3/leafy_cat/d65f0145/` |
+| 3 | (next session) | TBD | Aim for fantasy-creature feel, not domestic pet | Queued |
+
+### Critical lesson: body_type and template DOMINATE the description
+
+- `humanoid` → upright human/alien shape no matter the prompt words
+- `quadruped` + `cat` → housepet shape no matter the prompt words
+- The description influences markings/color/features, NOT silhouette/posture
+
+### Next session — Leafy attempt 3 options (ranked)
+
+1. **`body_type=quadruped` with template=`bear`** — bigger, more imposing silhouette. Reads "wild beast" not "house pet".
+2. **`body_type=quadruped` with template=`horse`** — elegant 4-legged, less domestic.
+3. **`body_type=humanoid` + explicit chibi `proportions` JSON** — preset chibi (big head, tiny body) might fix the string-bean issue. Check `create_character` schema for proportion presets.
+4. **Skip create_character entirely.** Use low-level Pixflux text-to-image for a hand-prompted anchor, then `create_character_state` for evolutions. Loses the 8-direction one-shot but lets us fully control silhouette.
+5. **Available templates worth trying:** `bear`, `cat`, `dog`, `horse`. Probably more (probe the API or check docs).
+
+### Old fallback (still wired in widget right now)
+
+- `web/assets/_v2/meadow/ANCHOR_LOCKED_*.png` + `SKEL_*_frame*.png` — the chibi fox-spirit Leafy from the low-level v1 REST workflow. Looks "OK", walks via skeleton frames + procedural bob.
+- This is what runs if you `npm start` today. Keep it as the v2 base until v3 Leafy lands.
+
+### User mood at session end
+
+Tired. Frustrated by:
+- Wasted hours on the wrapper trap (mcp__pixellab__* vs official MCP)
+- My false "tier-locked" claim
+- The cat template producing a "boring" output when they wanted a creature
+
+The pipeline is now PROVEN and the user CAN see characters being created in the Pixellab dashboard in real-time (they shared a screenshot). Iteration cost per character is ~3-5 min + maybe 1 retry. So Leafy attempt 3 can land quickly if we pick a better template upfront.
 
 ### User's stated complaints (open)
 - **Food emojis** still in `foods.js` — need pixel-art sprites via
@@ -221,25 +249,50 @@ After rotating, update:
 
 ## What's Next When User Returns
 
-**Immediate (waiting on background job):**
-1. Check if Leafy v3 character finished processing
-   (`python3 tools/pixellab_mcp.py status 4232a9d5-7244-4a5e-b361-568c4d4d2fb7`)
-2. Re-queue any animations that errored during character creation (idle, eat)
-3. Download all assets to `web/assets/_v3/leafy/`
-4. Rewrite Leafy's `animations` block in `creatures.js` to point at v3 files
-5. Relaunch widget — Leafy should look and move dramatically better
+**Immediate — Leafy attempt #3:**
+1. Decide template — recommendation: try `quadruped + bear` for creature feel.
+   Have user pick OR present 2-3 options first.
+2. `python3 tools/pixellab_mcp.py create "<creature desc>" "Leafy"` with chosen template.
+3. Watch the Pixellab dashboard for the rotations preview before queueing anims.
+4. If silhouette looks right → queue all template animations (`running-6-frames`,
+   `idle`, `eating`, `sitting-on-belly` or similar, `jump`, `angry`).
+5. Download bundle, wire into creatures.js, relaunch.
+6. **If still looks wrong, try a different template before iterating further.**
+   Don't waste time perfecting a body shape that won't work.
 
-**Then:**
-6. Same pipeline for Vex — create_character with cave/purple/mischief description
-7. Generate cave habitat backdrop (Pixellab text-to-image, 256×128, sage→purple palette)
-8. Wire cave backdrop
-9. Pick remaining 4 habitats + design 4 more creatures (one per habitat)
-10. Begin evolution form generation (stage 2, stage 3 + variants per species)
+**Cleanup tasks (any time):**
+- Delete `web/assets/_v3/leafy/4232a9d5/` (humanoid abomination)
+- Delete the cat-Leafy character on Pixellab dashboard if user doesn't want it
+- Decide whether to keep the v2 fallback assets
 
-**Later:**
-11. Food sprites (3 items, `create_map_object` via high-level MCP)
-12. Sleeping anchor (`create_character_state` for lying pose)
+**Then (queued from prior plan):**
+7. Same pipeline for Vex — likely body_type=quadruped + cat or fox-like template
+8. Cave habitat backdrop (Pixflux text-to-image, 256×128, deep violet palette)
+9. Wire cave backdrop
+10. Pick remaining 4 habitats + design 4 more creatures
+11. Evolution form generation via `create_character_state` (Stage 2 first, then
+    Stage 3 variants for the most polished species only)
+
+**Later (post-MVP):**
+12. Food sprites via `create_map_object` (high-level MCP)
 13. Sound polish, settings polish, onboarding flow
 14. Monetization model decision + paywall scaffolding
 15. PWA manifest + service worker for mobile
 16. App icon, marketing assets, store prep
+
+## Strategic principles to keep (from session-end discussion)
+
+- **Don't iterate template animations to perfection.** Use what works, skip
+  what doesn't. Time spent on Pixellab's `eating` template tuning ≠ time
+  building product features.
+- **Procedural code beats generated frames for subtle motion.** Idle bob,
+  happy squash, walk-bob — all live in code. Skeleton or template anims
+  are for *poses* not subtleties.
+- **For weak anims, use `create_character_state` to lock a pose, then
+  animate procedurally.** Single-pose + code > bad 4-frame loop.
+- **Reserve state budget for evolutions** — that's where it matters.
+- **"5 forms per species" cap exists for cost reasons** (~2700 generations
+  if every species gets full state coverage; cap keeps it tractable).
+- **Pick 3 hero animations per creature that MUST look great** (idle/walk/happy).
+  Accept "good enough" on the rest.
+- **Sell the MVP. Don't perfect it.**

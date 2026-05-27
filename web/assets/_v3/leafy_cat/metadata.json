@@ -1,0 +1,36 @@
+{
+  "group_id": null,
+  "states": [
+    {
+      "character": {
+        "id": "d65f0145-fd1f-49dd-82e5-844ef14e1db1",
+        "name": "Leafy",
+        "prompt": "small sage green cat-like creature with soft fur, big shiny coral eyes, gentle smile, leafy tuft on head, fluffy oversized tail, meadow pet companion",
+        "size": {
+          "width": 92,
+          "height": 92
+        },
+        "template_id": "cat",
+        "directions": 8,
+        "view": "side",
+        "created_at": "2026-05-27T18:06:24.332013+00:00"
+      },
+      "folder": "d65f0145",
+      "frames": {
+        "rotations": {
+          "south": "d65f0145/rotations/south.png",
+          "south-east": "d65f0145/rotations/south-east.png",
+          "east": "d65f0145/rotations/east.png",
+          "north-east": "d65f0145/rotations/north-east.png",
+          "north": "d65f0145/rotations/north.png",
+          "north-west": "d65f0145/rotations/north-west.png",
+          "west": "d65f0145/rotations/west.png",
+          "south-west": "d65f0145/rotations/south-west.png"
+        },
+        "animations": {}
+      }
+    }
+  ],
+  "export_version": "3.0",
+  "export_date": "2026-05-27T18:08:39.436706"
+}
