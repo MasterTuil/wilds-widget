@@ -1,17 +1,31 @@
 import { CREATURES } from '../web/src/data/creatures.js';
 import { FOODS }     from '../web/src/data/foods.js';
 import { GameState } from '../web/src/GameState.js';
+import { sfx }       from './sfx.js';
 
 // ── Constants ─────────────────────────────────────────────────────
 const FPS      = 8;
 const FRAME_MS = 1000 / FPS;
 const SCALE    = 2;
+const BLEND_MS = 70;   // crossfade between sprite frames — softens hard frame swaps
+
+// Per-animation frame rates (overrides FPS). Hand-tuned for personality:
+// happy = snappy, sad = droopy slow, walk = brisker than idle.
+const ANIM_FPS = {
+  idle: 8,            idle_east: 8,      idle_west: 8,
+  walk_east: 10,      walk_northeast: 10, walk_northwest: 10,
+  walk_southeast: 10, walk_southwest: 10,
+  happy: 6,           eating: 7,         sad: 4,
+  training: 10,       shower: 4,         wave: 6,
+};
 
 // ── State ─────────────────────────────────────────────────────────
 let gs, creature, save;
 let frames       = {};
 let currentAnim  = 'idle';
 let currentFrame = 0;
+let prevFrameIdx = 0;
+let frameSwapAt  = 0;
 let frameTimer   = 0;
 let lastTime     = 0;
 
@@ -407,9 +421,16 @@ function checkAchievements() {
 
 function syncSettingsPanel() {
   const btn = document.getElementById('setting-desktop-toggle');
-  if (!btn) return;
-  btn.textContent = desktopMode ? 'ON' : 'OFF';
-  btn.classList.toggle('on', desktopMode);
+  if (btn) {
+    btn.textContent = desktopMode ? 'ON' : 'OFF';
+    btn.classList.toggle('on', desktopMode);
+  }
+  const sBtn = document.getElementById('setting-sound-toggle');
+  if (sBtn) {
+    const on = !sfx.isMuted();
+    sBtn.textContent = on ? 'ON' : 'OFF';
+    sBtn.classList.toggle('on', on);
+  }
 }
 
 function buildAchievementsPanel() {
@@ -643,6 +664,7 @@ function onFeed(food, cardEl) {
   spawnFood(food.icon);
   awardXP(10);
   triggerFX('feed');
+  sfx.play('feed');
   setAnim('eating');
   setTimeout(() => {
     setAnim(idleAnim());
@@ -700,6 +722,7 @@ function onTrainTap() {
 
   document.getElementById('train-tap').classList.remove('flash');
   document.getElementById('train-result').textContent = `${grade}  +${xp}`;
+  sfx.play('train_hit');
   spawnXP(xp);
   trainScore += xp;
   trainPhase  = 'wait';
@@ -729,6 +752,7 @@ function onPet() {
   gs.pet?.();
   awardXP(8);
   triggerFX('pet');
+  sfx.play('pet');
   setAnim('happy');
   spawnSparkles();
   showToast(`${creature.name.toUpperCase()} LOVES THE ATTENTION`);
@@ -742,6 +766,7 @@ function onBathe() {
   gs.bathe?.();
   awardXP(12);
   triggerFX('bathe');
+  sfx.play('bathe');
   showToast(`${creature.name.toUpperCase()} IS SQUEAKY CLEAN!`);
   saveState();
   closePanel();
@@ -842,6 +867,7 @@ function awardXP(amount) {
   updateLevelDisplay();
   if (result.leveled) {
     triggerFX('levelup');
+    sfx.play('levelup');
     spawnLevelUp();
     spawnSparkles();
     // Flash the level label gold
@@ -881,7 +907,8 @@ function triggerAttentionSeek() {
   const inAction = ['eating', 'training'].includes(currentAnim);
   if (!inAction) setAnim('wave');
   spawnAttentionSeek();
-  showToast(`${creature.name.toUpperCase()} WANTS YOUR ATTENTION!`);
+  sfx.play('attention');
+  showToast(`${creature.name.toUpperCase()} WANTS YOUR ATTENTION`);
   updateMoodBubble('seeking');
   if (!inAction) setTimeout(() => setAnim(idleAnim()), 2400);
 }
@@ -1207,10 +1234,13 @@ function loop(now) {
 
   // Frame advance
   frameTimer += delta;
-  const animMs = currentAnim === 'shower' ? 1000 / 4 : currentAnim === 'happy' ? 1000 / 5 : FRAME_MS;
+  const fps    = ANIM_FPS[currentAnim] ?? FPS;
+  const animMs = 1000 / fps;
   if (frameTimer >= animMs) {
     frameTimer -= animMs;
     const anim = creature.animations[currentAnim] || creature.animations.idle;
+    prevFrameIdx = currentFrame;
+    frameSwapAt  = performance.now();
     currentFrame = (currentFrame + 1) % anim.length;
   }
 
@@ -1305,7 +1335,19 @@ function draw() {
   ctx.translate(cx, cy);
   if (fx.rot) ctx.rotate(fx.rot);
   ctx.scale((facingLeft ? -1 : 1) * fx.sx, fx.sy);
-  ctx.drawImage(img, -w / 2, -h, w, h);
+
+  // Crossfade between previous and current frame to soften sprite swaps
+  const prevImg = frames[anim[prevFrameIdx % anim.length]];
+  const blend   = Math.min(1, (performance.now() - frameSwapAt) / BLEND_MS);
+  if (prevImg && prevImg !== img && blend < 1) {
+    ctx.globalAlpha = 1 - blend;
+    ctx.drawImage(prevImg, -w / 2, -h, w, h);
+    ctx.globalAlpha = blend;
+    ctx.drawImage(img,    -w / 2, -h, w, h);
+    ctx.globalAlpha = 1;
+  } else {
+    ctx.drawImage(img, -w / 2, -h, w, h);
+  }
   ctx.restore();
 
   drawParticles();
@@ -1386,6 +1428,13 @@ async function boot() {
   // Back buttons inside achievements + settings panels
   document.querySelectorAll('.panel-back-btn').forEach(btn => {
     btn.addEventListener('click', () => openPanel(btn.dataset.panel));
+  });
+
+  // Settings: sound toggle
+  document.getElementById('setting-sound-toggle').addEventListener('click', () => {
+    sfx.setMuted(!sfx.isMuted());
+    if (!sfx.isMuted()) sfx.play('click');
+    syncSettingsPanel();
   });
 
   // Settings: desktop mode toggle
