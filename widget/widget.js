@@ -1389,10 +1389,26 @@ function draw() {
   const h   = img.naturalHeight * animScale;
   const cx  = posX * canvas.width;
 
-  // Breathing bob — subtle sine, halved when sleeping, none when showering
-  const bobAmp  = currentAnim === 'shower' ? 0 : (BEH.primaryState === 'sleeping' ? 1 : 2.5);
-  const bobHz   = BEH.primaryState === 'sleeping' ? 600 : 900;
-  const bob     = Math.sin(performance.now() / bobHz * Math.PI) * bobAmp;
+  // Vertical motion — depends on state:
+  //   walking → step-bob synced to frame index (2 hops per cycle, real walk feel)
+  //   sleeping → tiny chest rise
+  //   shower → no bob
+  //   default → breathing
+  const isWalking = currentAnim.startsWith('walk_');
+  let bob;
+  if (isWalking) {
+    // 4-frame walk → 2 step-ups, 2 step-downs. Phase via currentFrame + frameTimer.
+    const animLen = (creature.animations[currentAnim] || creature.animations.idle).length;
+    const subFramePhase = frameTimer / (1000 / (ANIM_FPS[currentAnim] ?? FPS));
+    const phase = ((currentFrame + subFramePhase) / animLen) * Math.PI * 4; // 2 cycles
+    bob = -Math.abs(Math.sin(phase)) * 3.5; // always pop up (negative Y), never below ground
+  } else if (currentAnim === 'shower') {
+    bob = 0;
+  } else {
+    const bobAmp = BEH.primaryState === 'sleeping' ? 1 : 2.5;
+    const bobHz  = BEH.primaryState === 'sleeping' ? 600 : 900;
+    bob = Math.sin(performance.now() / bobHz * Math.PI) * bobAmp;
+  }
   const fx      = getFX();
   const cy      = posY * canvas.height + bob + fx.dy;
 
