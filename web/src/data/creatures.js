@@ -86,15 +86,18 @@ export const CREATURES = {
       },
     },
     animations: {
-      idle:      ['assets/_v2/meadow/idle_south_frame0.png','assets/_v2/meadow/idle_south_frame1.png','assets/_v2/meadow/idle_south_frame2.png','assets/_v2/meadow/idle_south_frame3.png'],
-      idle_east: ['assets/_v2/meadow/idle_east_frame0.png','assets/_v2/meadow/idle_east_frame1.png','assets/_v2/meadow/idle_east_frame2.png','assets/_v2/meadow/idle_east_frame3.png'],
-      idle_west: ['assets/_v2/meadow/idle_east_frame0.png','assets/_v2/meadow/idle_east_frame1.png','assets/_v2/meadow/idle_east_frame2.png','assets/_v2/meadow/idle_east_frame3.png'],
+      // Single-frame idles — procedural breathing bob handles all motion.
+      // Fighting Pixellab's pose drift on multi-frame idles was the dance problem.
+      idle:      ['assets/_v2/meadow/ANCHOR_LOCKED_south.png'],
+      idle_east: ['assets/_v2/meadow/ANCHOR_LOCKED_east.png'],
+      idle_west: ['assets/_v2/meadow/ANCHOR_LOCKED_east.png'],
       walk_east:      ['assets/_v2/meadow/walk_east_frame0.png','assets/_v2/meadow/walk_east_frame1.png','assets/_v2/meadow/walk_east_frame2.png','assets/_v2/meadow/walk_east_frame3.png'],
       walk_northeast: ['assets/_v2/meadow/walk_east_frame0.png','assets/_v2/meadow/walk_east_frame1.png','assets/_v2/meadow/walk_east_frame2.png','assets/_v2/meadow/walk_east_frame3.png'],
       walk_southeast: ['assets/_v2/meadow/walk_east_frame0.png','assets/_v2/meadow/walk_east_frame1.png','assets/_v2/meadow/walk_east_frame2.png','assets/_v2/meadow/walk_east_frame3.png'],
       walk_northwest: ['assets/_v2/meadow/walk_east_frame0.png','assets/_v2/meadow/walk_east_frame1.png','assets/_v2/meadow/walk_east_frame2.png','assets/_v2/meadow/walk_east_frame3.png'],
       walk_southwest: ['assets/_v2/meadow/walk_east_frame0.png','assets/_v2/meadow/walk_east_frame1.png','assets/_v2/meadow/walk_east_frame2.png','assets/_v2/meadow/walk_east_frame3.png'],
-      happy:     ['assets/_v2/meadow/happy_frame0.png','assets/_v2/meadow/happy_frame1.png','assets/_v2/meadow/happy_frame2.png','assets/_v2/meadow/happy_frame3.png'],
+      // 2-frame happy cycle — anchor + bounce pose. Procedural squash handles the energy.
+      happy:     ['assets/_v2/meadow/ANCHOR_LOCKED_south.png','assets/_v2/meadow/happy_frame1.png'],
       eating:    ['assets/_v2/meadow/eating_frame0.png','assets/_v2/meadow/eating_frame1.png','assets/_v2/meadow/eating_frame2.png','assets/_v2/meadow/eating_frame3.png'],
       sad:       ['assets/_v2/meadow/sad_frame0.png','assets/_v2/meadow/sad_frame1.png','assets/_v2/meadow/sad_frame2.png','assets/_v2/meadow/sad_frame3.png'],
     },

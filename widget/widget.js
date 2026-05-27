@@ -484,7 +484,7 @@ function buildAchievementsPanel() {
 // yNorth = closest to camera top; yMax = furthest south (deepest ground).
 const HABITAT_ZONES = {
   cave: {
-    xMin: 0.08, xMax: 0.92,
+    xMin: 0.15, xMax: 0.85,
     yGround: 1.15, yNorth: 1.02, yMax: 1.20,
     poi: [
       { x: 0.08, y: 1.17 },  // left wall
@@ -499,7 +499,7 @@ const HABITAT_ZONES = {
     ],
   },
   meadow: {
-    xMin: 0.08, xMax: 0.92,
+    xMin: 0.15, xMax: 0.85,
     yGround: 1.15, yNorth: 1.02, yMax: 1.20,
     poi: [
       { x: 0.06, y: 1.16 },  // far-left grass
