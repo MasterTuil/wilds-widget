@@ -184,6 +184,8 @@ function setAnim(name) {
   if (currentAnim === name) return;
   currentAnim  = name;
   currentFrame = 0;
+  prevFrameIdx = 0;
+  frameSwapAt  = 0;
   frameTimer   = 0;
 }
 
@@ -1336,9 +1338,12 @@ function draw() {
   if (fx.rot) ctx.rotate(fx.rot);
   ctx.scale((facingLeft ? -1 : 1) * fx.sx, fx.sy);
 
-  // Crossfade between previous and current frame to soften sprite swaps
+  // Crossfade between previous and current frame to soften sprite swaps.
+  // Blend duration scales with frame interval to prevent overlap on fast anims.
   const prevImg = frames[anim[prevFrameIdx % anim.length]];
-  const blend   = Math.min(1, (performance.now() - frameSwapAt) / BLEND_MS);
+  const animMs  = 1000 / (ANIM_FPS[currentAnim] ?? FPS);
+  const blendMs = Math.min(BLEND_MS, animMs * 0.45);
+  const blend   = Math.min(1, (performance.now() - frameSwapAt) / blendMs);
   if (prevImg && prevImg !== img && blend < 1) {
     ctx.globalAlpha = 1 - blend;
     ctx.drawImage(prevImg, -w / 2, -h, w, h);
