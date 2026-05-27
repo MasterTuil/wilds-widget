@@ -161,9 +161,34 @@ Plus:
 
 ## 8. THE PIXELLAB PIPELINE (locked workflow)
 
-The MCP wrapper that's loaded by default has broken validation and exposes
-wrong field names. **Bypass it.** Use `tools/pixellab_skeleton.py` which
-calls the v1 REST API directly.
+### USE THE HIGH-LEVEL MCP CLIENT (`tools/pixellab_mcp.py`)
+
+The default Claude Code `mcp__pixellab__*` tools are a **low-level v1 REST
+wrapper that lacks the character workflow.** Don't use them for new creatures.
+Use `tools/pixellab_mcp.py` which calls the official high-level MCP at
+`api.pixellab.ai/mcp` via JSON-RPC/SSE.
+
+```bash
+# 1. Create character with all 8 directions (returns character_id)
+python3 tools/pixellab_mcp.py create "<description>" "<name>"
+
+# 2. Queue animations (run after character ready)
+python3 tools/pixellab_mcp.py walk <character_id>
+python3 tools/pixellab_mcp.py action <character_id> "<action_description>" "<anim_name>"
+
+# 3. Poll to readiness
+python3 tools/pixellab_mcp.py status <character_id>
+
+# 4. Download to disk
+python3 tools/pixellab_mcp.py download <character_id> <out_dir>
+```
+
+### Fallback: `tools/pixellab_skeleton.py` (low-level v1 REST)
+
+Only use when the high-level client can't do what you need. Direct call to
+`/v1/animate-with-skeleton`. Keyframe library (walk/eat/sad/sleep/training)
+built in. The MCP wrapper that's loaded by default has broken validation and
+exposes wrong field names — this script bypasses it.
 
 ### Per-creature workflow (turnkey)
 1. **Generate anchor** with Pixflux text-to-image. Iterate until the
