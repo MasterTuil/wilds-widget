@@ -30,9 +30,9 @@ let frameTimer   = 0;
 let lastTime     = 0;
 
 let posX        = 0.5;
-let posY        = 1.15;
+let posY        = 1.05;
 let targetX     = 0.5;
-let targetY     = 1.15;
+let targetY     = 1.05;
 let isMoving    = false;
 let facingLeft  = false;
 let wanderTimer = 0;
@@ -485,32 +485,32 @@ function buildAchievementsPanel() {
 const HABITAT_ZONES = {
   cave: {
     xMin: 0.15, xMax: 0.85,
-    yGround: 1.15, yNorth: 1.02, yMax: 1.20,
+    yGround: 1.05, yNorth: 0.75, yMax: 1.08,
     poi: [
-      { x: 0.08, y: 1.17 },  // left wall
-      { x: 0.90, y: 1.17 },  // right wall
-      { x: 0.42, y: 1.16 },  // center rock
-      { x: 0.18, y: 1.09 },  // under left stalactite
-      { x: 0.72, y: 1.09 },  // under right stalactite
-      { x: 0.55, y: 1.08 },  // center stalactite
-      { x: 0.15, y: 1.03 },  // left crystal (far north)
-      { x: 0.78, y: 1.03 },  // right crystal (far north)
-      { x: 0.50, y: 1.04 },  // center north
+      { x: 0.18, y: 1.05 },  // left wall ground
+      { x: 0.82, y: 1.05 },  // right wall ground
+      { x: 0.42, y: 1.04 },  // center rock
+      { x: 0.22, y: 0.92 },  // under left stalactite (mid)
+      { x: 0.72, y: 0.92 },  // under right stalactite (mid)
+      { x: 0.55, y: 0.90 },  // center stalactite (mid)
+      { x: 0.20, y: 0.78 },  // left crystal (far north)
+      { x: 0.78, y: 0.78 },  // right crystal (far north)
+      { x: 0.50, y: 0.80 },  // center north (deep scene)
     ],
   },
   meadow: {
     xMin: 0.15, xMax: 0.85,
-    yGround: 1.15, yNorth: 1.02, yMax: 1.20,
+    yGround: 1.05, yNorth: 0.75, yMax: 1.08,
     poi: [
-      { x: 0.06, y: 1.16 },  // far-left grass
-      { x: 0.92, y: 1.16 },  // far-right grass
-      { x: 0.12, y: 1.15 },  // left flower
-      { x: 0.87, y: 1.15 },  // right flower
-      { x: 0.35, y: 1.14 },  // mid-left flower patch
-      { x: 0.68, y: 1.14 },  // mid-right flower patch
-      { x: 0.50, y: 1.04 },  // hill top (far north)
-      { x: 0.22, y: 1.08 },  // left mid-depth
-      { x: 0.78, y: 1.08 },  // right mid-depth
+      { x: 0.18, y: 1.05 },  // left grass tuft
+      { x: 0.82, y: 1.05 },  // right grass tuft
+      { x: 0.30, y: 1.03 },  // left flower patch
+      { x: 0.70, y: 1.03 },  // right flower patch
+      { x: 0.50, y: 1.02 },  // center bloom
+      { x: 0.25, y: 0.88 },  // left mid-depth
+      { x: 0.75, y: 0.88 },  // right mid-depth
+      { x: 0.50, y: 0.78 },  // hilltop (far north)
+      { x: 0.40, y: 0.82 },  // off-center north
     ],
   },
 };
@@ -548,7 +548,7 @@ function pickWanderTarget() {
     tx = preferRight === true  ? 0.5  + Math.random() * (zone.xMax - 0.5)
        : preferRight === false ? zone.xMin + Math.random() * (0.5 - zone.xMin)
        : zone.xMin + Math.random() * span;
-    ty = zone.yNorth + Math.random() * (zone.yGround - zone.yNorth) * 0.55;
+    ty = zone.yNorth + Math.random() * (zone.yGround - zone.yNorth) * 1.0;
 
   } else {
     // Ground-level wander
