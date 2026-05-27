@@ -54,6 +54,57 @@ export const CREATURES = {
       { name: '???',        prob: null, hint: 'Something hidden stirs beneath the mask...' },
     ],
   },
+  leafy: {
+    id: 'leafy',
+    name: 'Leafy',
+    type: 'Sprite',
+    affinities: ['CHA', 'END'],
+    personality: 'Gentle, curious, finds wonder in small things.',
+    lore: 'Born when sunlight first touched a forgotten seed.',
+    color: '#7ec89a',
+    affinityBonus: { CHA: 1.15, END: 1.15 },
+    behaviorProfile: {
+      patience:  9,   // patient, doesn't demand attention often
+      curiosity: 6,   // wanders gently
+      affection: 8,   // big warm reaction to interaction
+      mischief:  3,   // calm, rarely surprises
+      energy:    5,   // slow, deliberate pace
+    },
+    habitat: {
+      id: 'meadow',
+      name: 'The Meadow',
+      background: 'assets/habitats/meadow_bg.png',
+      theme: {
+        '--habitat-primary':   '#7ec89a',
+        '--habitat-glow':      'rgba(126,200,154,0.32)',
+        '--habitat-mid':       '#1a2418',
+        '--habitat-border':    'rgba(126,200,154,0.18)',
+        '--habitat-hud':       '#0e1a1200',
+        '--bg-mid':            '#1a2418',
+        '--bg-panel':          '#101a13',
+        '--creature-color':    '#7ec89a',
+      },
+    },
+    animations: {
+      idle:      ['assets/_v2/meadow/idle_south_frame0.png','assets/_v2/meadow/idle_south_frame1.png','assets/_v2/meadow/idle_south_frame2.png','assets/_v2/meadow/idle_south_frame3.png'],
+      idle_east: ['assets/_v2/meadow/idle_east_frame0.png','assets/_v2/meadow/idle_east_frame1.png','assets/_v2/meadow/idle_east_frame2.png','assets/_v2/meadow/idle_east_frame3.png'],
+      idle_west: ['assets/_v2/meadow/idle_east_frame0.png','assets/_v2/meadow/idle_east_frame1.png','assets/_v2/meadow/idle_east_frame2.png','assets/_v2/meadow/idle_east_frame3.png'],
+      walk_east:      ['assets/_v2/meadow/walk_east_frame0.png','assets/_v2/meadow/walk_east_frame1.png','assets/_v2/meadow/walk_east_frame2.png','assets/_v2/meadow/walk_east_frame3.png'],
+      walk_northeast: ['assets/_v2/meadow/walk_east_frame0.png','assets/_v2/meadow/walk_east_frame1.png','assets/_v2/meadow/walk_east_frame2.png','assets/_v2/meadow/walk_east_frame3.png'],
+      walk_southeast: ['assets/_v2/meadow/walk_east_frame0.png','assets/_v2/meadow/walk_east_frame1.png','assets/_v2/meadow/walk_east_frame2.png','assets/_v2/meadow/walk_east_frame3.png'],
+      walk_northwest: ['assets/_v2/meadow/walk_east_frame0.png','assets/_v2/meadow/walk_east_frame1.png','assets/_v2/meadow/walk_east_frame2.png','assets/_v2/meadow/walk_east_frame3.png'],
+      walk_southwest: ['assets/_v2/meadow/walk_east_frame0.png','assets/_v2/meadow/walk_east_frame1.png','assets/_v2/meadow/walk_east_frame2.png','assets/_v2/meadow/walk_east_frame3.png'],
+      happy:     ['assets/_v2/meadow/happy_frame0.png','assets/_v2/meadow/happy_frame1.png','assets/_v2/meadow/happy_frame2.png','assets/_v2/meadow/happy_frame3.png'],
+      eating:    ['assets/_v2/meadow/eating_frame0.png','assets/_v2/meadow/eating_frame1.png','assets/_v2/meadow/eating_frame2.png','assets/_v2/meadow/eating_frame3.png'],
+      sad:       ['assets/_v2/meadow/sad_frame0.png','assets/_v2/meadow/sad_frame1.png','assets/_v2/meadow/sad_frame2.png','assets/_v2/meadow/sad_frame3.png'],
+    },
+    evolutionPaths: [
+      { name: 'Bramble', prob: 0.50, hint: 'END dominant · Nature diet · The Meadow' },
+      { name: 'Bloom',   prob: 0.30, hint: 'CHA dominant · Crafted diet · The Meadow' },
+      { name: 'Thorn',   prob: 0.20, hint: 'DEF dominant · Tempered diet · The Forest' },
+      { name: '???',     prob: null, hint: 'Something quiet sprouts in the green...' },
+    ],
+  },
   aura: {
     id: 'aura',
     name: 'Aura',

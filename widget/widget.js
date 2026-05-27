@@ -433,6 +433,31 @@ function syncSettingsPanel() {
     sBtn.textContent = on ? 'ON' : 'OFF';
     sBtn.classList.toggle('on', on);
   }
+  const cBtn = document.getElementById('setting-creature-cycle');
+  if (cBtn && creature) {
+    cBtn.textContent = creature.name.toUpperCase();
+    cBtn.classList.add('on');
+  }
+}
+
+async function switchCreature(newId) {
+  const next = CREATURES[newId];
+  if (!next || next.id === creature.id) return;
+  creature = next;
+  gs.startNewGame(newId);
+  // Preload new sprites + apply theme
+  await Promise.all(Object.values(creature.animations).flat().map(loadImage));
+  applyTheme(creature.habitat);
+  document.getElementById('creature-label').textContent = creature.name.toUpperCase();
+  buildFoodGrid();
+  buildEvoPaths();
+  buildHabitatPanel();
+  updateLevelDisplay();
+  setAnim('idle');
+  posX = 0.5; posY = 0.88;
+  isMoving = false;
+  saveState();
+  showToast(`SWITCHED TO ${creature.name.toUpperCase()}`);
 }
 
 function buildAchievementsPanel() {
@@ -1433,6 +1458,16 @@ async function boot() {
   // Back buttons inside achievements + settings panels
   document.querySelectorAll('.panel-back-btn').forEach(btn => {
     btn.addEventListener('click', () => openPanel(btn.dataset.panel));
+  });
+
+  // Settings: creature cycle
+  document.getElementById('setting-creature-cycle').addEventListener('click', async () => {
+    const ids   = Object.keys(CREATURES);
+    const idx   = ids.indexOf(creature.id);
+    const nextId = ids[(idx + 1) % ids.length];
+    await switchCreature(nextId);
+    sfx.play('click');
+    syncSettingsPanel();
   });
 
   // Settings: sound toggle
