@@ -74,14 +74,16 @@ export const CREATURES = {
       id: 'meadow',
       name: 'The Meadow',
       background: 'assets/habitats/meadow_bg.png',
+      // UI accent is SKY BLUE for the meadow — sage on sage drowns out.
+      // Creature stays sage; habitat-primary drives chrome only.
       theme: {
-        '--habitat-primary':   '#7ec89a',
-        '--habitat-glow':      'rgba(126,200,154,0.32)',
-        '--habitat-mid':       '#1a2418',
-        '--habitat-border':    'rgba(126,200,154,0.18)',
-        '--habitat-hud':       '#0e1a1200',
-        '--bg-mid':            '#1a2418',
-        '--bg-panel':          '#101a13',
+        '--habitat-primary':   '#6fb8e0',
+        '--habitat-glow':      'rgba(111,184,224,0.32)',
+        '--habitat-mid':       '#15212d',
+        '--habitat-border':    'rgba(111,184,224,0.18)',
+        '--habitat-hud':       '#0e1a2200',
+        '--bg-mid':            '#15212d',
+        '--bg-panel':          '#101824',
         '--creature-color':    '#7ec89a',
       },
     },
