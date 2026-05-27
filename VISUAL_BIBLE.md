@@ -169,7 +169,35 @@ To enforce the bible across all generations:
 
 ---
 
-## 9. WHAT WE EXPLICITLY DO NOT DO
+## 9. EVOLUTION MODEL (locked)
+
+**5 forms per species. Hard cap.**
+
+- **Stage 1** — base form (what you start with)
+- **Stage 2** — mid evolution (triggered by time + bond + needs balance)
+- **Stage 3** — final form, **branches by dominant food category fed**
+  during the evolution window:
+  - **Primal-fed final** → strength-themed Stage 3
+  - **Nature-fed final** → endurance-themed Stage 3
+  - **Arcane-fed final** → intellect-themed Stage 3
+
+Player gets ONE of three Stage-3 finals. The other two are
+locked behind a second playthrough with that species (replayability).
+
+### Asset budget per species
+- 5 forms × ~30 sprite animations each = ~150 sprites
+- Well within 2000/month Pixellab tier
+- Each form derives from the previous via Bitforge with strong style
+  reference — silhouette evolves but family DNA holds
+
+### Why 3 finals, not 7
+Earlier brainstorm allowed 7 forms. **Rejected.** 5 forms is the cap.
+Anything more dilutes the moment of evolution. Tamagotchi got mileage from
+2 stages. Pokémon overused branching. WILDS hits the sweet spot.
+
+---
+
+## 10. WHAT WE EXPLICITLY DO NOT DO
 
 - No Pokémon-style typing/elemental affinity wars. WILDS is a *companion*
   product, not a battler. Affinities exist in data for training stat
@@ -181,7 +209,7 @@ To enforce the bible across all generations:
 
 ---
 
-## 10. DECISIONS STILL OPEN (need user lock-in)
+## 11. DECISIONS STILL OPEN (need user lock-in)
 
 These are NOT locked yet. Mark with date when decided.
 
