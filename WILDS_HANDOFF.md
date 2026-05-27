@@ -128,7 +128,46 @@ Don't be cheap with retries.
 - Expanded wander zone (creatures use full canvas vertical range)
 - Reduced foods to 3 (one per category) maps to 3 evolution branches
 
-### Leafy character iterations — three attempts, none final
+### ⚡ MAJOR SHIFT: project moved to Godot
+
+The Electron prototype (this repo's `widget/`) is **frozen as legacy**.
+Production codebase is `../WILDS_godot/` — Godot 4.6.3.
+
+Why: Electron canvas means hand-rolled animation timing → endless polish loops.
+Godot's `AnimatedSprite2D` handles all of that natively. Pixellab's docs
+specifically recommend Godot + Claude.
+
+**Auto-loading docs for new sessions in Godot folder:**
+- `../WILDS_godot/CLAUDE.md` — bootstrap context
+- This file (WILDS_HANDOFF.md) — full history
+
+### THE BREAKTHROUGH (user-discovered)
+
+User cracked the workflow themselves:
+1. **Pixellab dashboard "image copier"** — upload reference image(s), generate
+   a character that matches the visual you actually want. This bypasses the
+   text-only limitation of the MCP `create_character` tool.
+2. User designs creatures in the dashboard with their visual eye, gets a
+   `character_id` back.
+3. AI side runs the bulk pipeline (queue all animations, poll, download bundle).
+
+**Time per creature with this split: ~30 min.** User controls design, AI
+controls volume. Division of labor that works.
+
+### Active character roster on user's Pixellab account
+
+(Run `python3 tools/pixellab_mcp.py list` to refresh.)
+
+| character_id | Description | Size | Status |
+|---|---|---|---|
+| `53cc71e7-9ed3-4b25-a32e-fa5223dc3022` | **Vex v3** — currently wired in Godot | 124×124 | 19 anims, complete |
+| `81450494-61fb-4b4e-bd46-1eeb6d154ca9` | Masked fox Vex — purple/black, white mask, lore-accurate ("Vex's mask isn't worn. It grew there") | 92×92 | 11 anims |
+| `bee86ef9-f12f-484c-9e6d-618669f67214` | Giant monkey with big arms and long hair — the breakthrough character | 128×128 | rotations only |
+| `2504dfea-a099-4f5e-8717-f94e540b6387` | Baby dog-dragon hybrid, teal+lavender scales, oversized head | 124×124 | 4 anims |
+| `d65f0145-fd1f-49dd-82e5-844ef14e1db1` | Leafy cat (boring per user, but functional) | 92×92 | 8 anims |
+| `0be7704b-be7e-41ab-b5e9-7e359604f521` | Baby tadpole monster with tongue out | 64×64 | creating (~2%) |
+
+### Leafy character iterations — three attempts (CONTEXT ONLY, superseded by Vex)
 
 | # | character_id | body_type / template | Result | State |
 |---|---|---|---|---|
@@ -247,18 +286,65 @@ After rotating, update:
 
 ---
 
+## Current Godot project state (`../WILDS_godot/`)
+
+### What's working
+- `project.godot` — 520×380 viewport, **resizable=true**, canvas_items stretch,
+  integer scale mode (preserves pixel-art crispness on resize)
+- `scenes/main.tscn` — Backdrop (meadow.png) + GameState + Vex + HUD
+- `scenes/hud.tscn` — needs chips, day/lvl labels, action bar
+- `scripts/game_state.gd` — 4 needs decay over real time, XP/level, action methods
+- `scripts/main.gd` — routes HUD button signals → game_state + creature animations
+- `scripts/vex.gd` — wires all 19 Vex animations, 8-direction walk, direction-aware idle, action lock for one-shots
+- `scripts/hud.gd` — ProgressBar refresh, action bar hover-reveal (alpha lerp)
+- Vex's full 19-animation sheet downloaded at `assets/characters/vex/53cc71e7/`
+- Meadow backdrop copied from Electron version
+- Buttons functional: FEED → eat anim, PET → wave_hello, CLEAN → shower, TRAIN → jab
+
+### What's UGLY (Electron parity polish needed)
+- Default Godot button/label styling — no custom theme, no glass, no fonts
+- Needs chips are just `ProgressBar` nodes with `HUN`/`EGY`/`MOD`/`HYG` text;
+  Electron had SVG icons + colored bars in styled glass containers
+- DAY/LVL pills are bare labels, not the glass-pill chrome from Electron
+- Action bar is default-style buttons, not the pill chrome with hover lift
+- No grain overlay, no chrome `color-mix` tinting per habitat
+- IBM Plex Mono font from Electron is not loaded yet — using Godot default
+- Cloud drift layer not wired (we have the `clouds.png` ready)
+
+### Window resize support (just added — verify)
+- `window/size/resizable=true`
+- `stretch/mode="canvas_items"` + `aspect="keep"` + `scale_mode="integer"`
+- This means: drag window corner → content scales at integer multiples
+  (1×, 2×, 3×) which keeps pixels crisp. No blurry stretching.
+
 ## What's Next When User Returns
 
-**Immediate — Leafy attempt #3:**
-1. Decide template — recommendation: try `quadruped + bear` for creature feel.
-   Have user pick OR present 2-3 options first.
-2. `python3 tools/pixellab_mcp.py create "<creature desc>" "Leafy"` with chosen template.
-3. Watch the Pixellab dashboard for the rotations preview before queueing anims.
-4. If silhouette looks right → queue all template animations (`running-6-frames`,
-   `idle`, `eating`, `sitting-on-belly` or similar, `jump`, `angry`).
-5. Download bundle, wire into creatures.js, relaunch.
-6. **If still looks wrong, try a different template before iterating further.**
-   Don't waste time perfecting a body shape that won't work.
+**Immediate priorities in the Godot project:**
+
+1. **Theme/polish the HUD** to match Electron quality:
+   - Apply a `Theme` resource with custom font (IBM Plex Mono — can use
+     `theme_override_fonts`) and StyleBoxFlat for buttons/panels with
+     glass + tinted borders.
+   - Color the needs chip labels per state (yellow energy ⚡, red mood ♥, blue hygiene 💧)
+   - Style the day/lvl labels as glass pills with the habitat-tinted border
+2. **Test window resize** — drag corner. Should integer-scale crisply.
+   If blurry, adjust `texture_filter` on the AnimatedSprite2D and Backdrop.
+3. **Wire drifting clouds layer** — `assets/habitats/clouds.png` is there,
+   needs a TextureRect with horizontal drift (Tween or AnimationPlayer).
+4. **Build the panels** — STATS / HABITAT / SETTINGS buttons currently just
+   `print()`. Need slide-up Panel scenes with content (needs detail, evolution
+   paths, etc.).
+5. **Creature switcher** — user has multiple characters. Build a Settings
+   row that cycles through character IDs.
+
+**Then:**
+6. Wire **the monkey** (`bee86ef9`) — has rotations, no animations yet.
+   Either generate animations via `animate_character` template calls,
+   or use as a static-rotations-only character with procedural motion.
+7. Wire **masked-fox Vex** (`81450494`) — lore-accurate alternate. Could
+   be Stage-2 evolution of Vex via `create_character_state` derivation.
+8. Wire **dog-dragon** (`2504dfea`) — fits "Storm" habitat in bible palette.
+9. Wire **tadpole** (`0be7704b`) once it finishes generating — possible Shore creature.
 
 **Cleanup tasks (any time):**
 - Delete `web/assets/_v3/leafy/4232a9d5/` (humanoid abomination)
