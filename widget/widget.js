@@ -646,6 +646,16 @@ function openPanel(id) {
 
   panel.classList.add('open');
   activePanel = id;
+
+  // Settle the creature: opening a panel is engagement.
+  // Reset attention drain + stop mid-walk so she's not running in place.
+  onInteraction();
+  if (isMoving || isWalkAnim(currentAnim)) {
+    isMoving = false;
+    targetX = posX;
+    targetY = posY;
+    setAnim(idleAnim());
+  }
 }
 
 function closePanel() {
@@ -1147,6 +1157,9 @@ function drawParallaxLayer(cfg, t) {
 }
 
 function drawParallax() {
+  // Skip procedural ridges when this habitat has a real Pixellab backdrop —
+  // they were a placeholder for missing scene art and now just cover it.
+  if (HABITAT_LAYERS[creature.habitat.id]) return;
   const cfg = PARALLAX_CFG[creature.habitat.id];
   if (!cfg) return;
   const t = performance.now() / 1000;
@@ -1390,11 +1403,13 @@ function draw() {
 
   // Crossfade between previous and current frame to soften sprite swaps.
   // Blend duration scales with frame interval to prevent overlap on fast anims.
+  // Walks skip blending — frame-by-frame position offsets cause ghosting.
+  const isWalk  = currentAnim.startsWith('walk_');
   const prevImg = frames[anim[prevFrameIdx % anim.length]];
   const animMs  = 1000 / (ANIM_FPS[currentAnim] ?? FPS);
   const blendMs = Math.min(BLEND_MS, animMs * 0.45);
   const blend   = Math.min(1, (performance.now() - frameSwapAt) / blendMs);
-  if (prevImg && prevImg !== img && blend < 1) {
+  if (!isWalk && prevImg && prevImg !== img && blend < 1) {
     ctx.globalAlpha = 1 - blend;
     ctx.drawImage(prevImg, -w / 2, -h, w, h);
     ctx.globalAlpha = blend;

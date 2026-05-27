@@ -265,9 +265,9 @@ html, body {
 }
 
 .act-pill {
-  background:   rgba(155, 127, 212, 0.12);
-  border:       1px solid rgba(155, 127, 212, 0.25);
-  color:        rgba(200, 180, 255, 0.8);
+  background:   color-mix(in srgb, var(--habitat-primary) 14%, transparent);
+  border:       1px solid color-mix(in srgb, var(--habitat-primary) 35%, transparent);
+  color:        color-mix(in srgb, var(--habitat-primary) 70%, #ffffff);
   font-family:  'IBM Plex Mono', 'Courier New', ui-monospace, monospace;
   font-size:    10px;
   letter-spacing: 1.5px;
@@ -275,12 +275,12 @@ html, body {
   padding:      4px 10px;
   border-radius: 12px;
   cursor:       pointer;
-  transition:   background 0.15s, color 0.15s, border-color 0.15s;
+  transition:   background 0.15s, color 0.15s, border-color 0.15s, transform 0.15s;
 }
 
 .act-pill:hover,
 .act-pill.active {
-  background:   rgba(155, 127, 212, 0.3);
+  background:   color-mix(in srgb, var(--habitat-primary) 32%, transparent);
   border-color: var(--habitat-primary);
   color:        #fff;
   transform:    translateY(-1px);
@@ -703,7 +703,7 @@ html, body {
   padding:       3px 6px 3px 5px;
   border-radius: 8px;
   background:    rgba(10, 8, 24, 0.55);
-  border:        1px solid rgba(155, 127, 212, 0.18);
+  border:        1px solid color-mix(in srgb, var(--habitat-primary) 28%, transparent);
   backdrop-filter: blur(6px);
   transition:    background 0.4s, border-color 0.4s, box-shadow 0.4s;
 }
@@ -712,13 +712,18 @@ html, body {
   width:       10px;
   height:      10px;
   flex-shrink: 0;
-  color:       rgba(220, 205, 255, 0.9);
   opacity:     0.95;
   transition:  color 0.4s, opacity 0.4s, filter 0.4s;
 }
 
-.need-chip.warn .need-icon { color: #f0c040; }
-.need-chip.crit .need-icon { color: #ff8c8c; filter: drop-shadow(0 0 2px rgba(224,85,85,0.7)); }
+/* Per-need icon colors (overridden by warn/crit states) */
+#need-hunger  .need-icon { color: rgba(220, 205, 255, 0.85); } /* neutral for now */
+#need-energy  .need-icon { color: #ffd84a; }                    /* yellow bolt    */
+#need-mood    .need-icon { color: #ff7a8a; }                    /* red heart      */
+#need-hygiene .need-icon { color: #6fc4f5; }                    /* blue droplet   */
+
+.need-chip.warn .need-icon { color: #f0c040 !important; }
+.need-chip.crit .need-icon { color: #ff8c8c !important; filter: drop-shadow(0 0 2px rgba(224,85,85,0.7)); }
 
 .need-bar {
   display:       block;
@@ -760,31 +765,39 @@ html, body {
 /* ── Day label ────────────────────────────────────────── */
 #day-label {
   position:   absolute;
-  top:        10px;
-  right:      12px;
+  top:        8px;
+  right:      10px;
   font-size:  8px;
   letter-spacing: 2px;
-  color:      var(--habitat-primary);
-  opacity:    0.4;
+  color:      color-mix(in srgb, var(--habitat-primary) 70%, #ffffff);
+  padding:    3px 7px;
+  border-radius: 7px;
+  background: rgba(10, 8, 24, 0.55);
+  border:     1px solid color-mix(in srgb, var(--habitat-primary) 28%, transparent);
+  backdrop-filter: blur(6px);
   z-index:    10;
 }
 
 /* ── Level + XP bar ───────────────────────────────────── */
 #xp-row {
   position:    absolute;
-  top:         24px;
-  right:       12px;
+  top:         30px;
+  right:       10px;
   display:     flex;
   align-items: center;
   gap:         6px;
+  padding:     3px 7px;
+  border-radius: 7px;
+  background:  rgba(10, 8, 24, 0.55);
+  border:      1px solid color-mix(in srgb, var(--habitat-primary) 28%, transparent);
+  backdrop-filter: blur(6px);
   z-index:     10;
 }
 
 #lvl-label {
   font-size:     8px;
   letter-spacing: 2px;
-  color:         var(--habitat-primary);
-  opacity:       0.55;
+  color:         color-mix(in srgb, var(--habitat-primary) 70%, #ffffff);
   transition:    color 0.3s, opacity 0.3s;
 }
 

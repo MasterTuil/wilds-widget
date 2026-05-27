@@ -46,6 +46,13 @@ No other sizes. Ever.
   - 1–2× highlight tones (warm side)
   - 1× accent (the "memorable" color — eye color, marking, tail tip)
 
+### Launch scope (locked)
+- **6 species at v1.0** (one per habitat)
+- **6 habitats** — one per species, each with its own palette family
+- Each species has 5 forms (see §9). Total launch sprite budget:
+  6 species × 5 forms × ~30 sprites = ~900 sprites. Well within
+  Pixellab tier.
+
 ### Per-habitat palette (the family rule)
 Habitat picks the colorway. Creatures from a habitat share its temperature.
 
