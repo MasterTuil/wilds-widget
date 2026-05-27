@@ -3,7 +3,7 @@
 Last updated: 2026-05-27 (multi-session: foundation + visual bible + skeleton + MCP debug)
 
 > **Context for next Claude session:** read this top-to-bottom **and**
-> `VISUAL_BIBLE.md` before doing anything. Then `cat CLAUDE_BRIEF.md` for
+> `VISUAL_BIBLE.md` before doing anything. Then `cat WILDS_BRIEF.md` for
 > the technical baseline.
 
 ---
@@ -182,8 +182,8 @@ constitution — every visual decision references it. Update with strikethrough
 | `tools/pixellab_mcp.py` | **High-level MCP client — USE THIS** |
 | `tools/pixellab_skeleton.py` | Low-level skeleton helper (fallback) |
 | `VISUAL_BIBLE.md` | Locked design rules — constitution |
-| `CLAUDE_BRIEF.md` | Technical baseline |
-| `HANDOFF.md` | This file |
+| `WILDS_BRIEF.md` | Technical baseline |
+| `WILDS_HANDOFF.md` | This file |
 | `web/assets/_v2/meadow/` | Old Leafy assets (v1 REST workflow) |
 | `web/assets/_v3/leafy/` | New Leafy assets (high-level MCP workflow) — POPULATING |
 
