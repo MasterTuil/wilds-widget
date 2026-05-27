@@ -171,18 +171,21 @@ To enforce the bible across all generations:
 
 ## 9. EVOLUTION MODEL (locked)
 
-**5 forms per species. Hard cap.**
+**5 forms per species. Hard cap. (1 optional secret 6th form reserved.)**
 
 - **Stage 1** — base form (what you start with)
 - **Stage 2** — mid evolution (triggered by time + bond + needs balance)
-- **Stage 3** — final form, **branches by dominant food category fed**
-  during the evolution window:
-  - **Primal-fed final** → strength-themed Stage 3
-  - **Nature-fed final** → endurance-themed Stage 3
-  - **Arcane-fed final** → intellect-themed Stage 3
+- **Stage 3 — Default** — triggered when no dominant food category emerged
+- **Stage 3 — Food-dominant** — when one food category dominated feeding window
+- **Stage 3 — Food + Training combo** — dominant food + training-stat threshold
 
-Player gets ONE of three Stage-3 finals. The other two are
-locked behind a second playthrough with that species (replayability).
+**Optional secret 6th form**: very hard to unlock (specific condition combos).
+This is the "perk" tier — premium feeling for committed players, future
+monetization candidate. **Not built day-one. Reserved.**
+
+The default form is intentionally the "you didn't optimize" path — still
+desirable, looks like the base species' truest form. The food and combo
+variants reward intentional play.
 
 ### Asset budget per species
 - 5 forms × ~30 sprite animations each = ~150 sprites

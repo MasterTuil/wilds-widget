@@ -283,6 +283,15 @@ function updateDayLabel() {
 }
 
 // ── Habitat theme ─────────────────────────────────────────────────
+// Habitat backdrop + cloud layer image paths (relative to widget.css)
+const HABITAT_LAYERS = {
+  meadow: {
+    backdrop: '../web/assets/_v2/habitats/meadow_v2.png',
+    clouds:   '../web/assets/_v2/habitats/meadow_clouds.png',
+  },
+  // cave: future Pixellab cave scene
+};
+
 function applyTheme(habitat) {
   const root = document.documentElement;
   for (const [k, v] of Object.entries(habitat.theme)) {
@@ -290,6 +299,22 @@ function applyTheme(habitat) {
   }
   root.style.setProperty('--ground-top', habitat.theme['--bg-mid']   || '#1a1232');
   root.style.setProperty('--ground-bot', habitat.theme['--bg-panel'] || '#0d0a1e');
+
+  // Backdrop + clouds for this habitat (if defined)
+  const bd  = document.getElementById('habitat-backdrop');
+  const cld = document.getElementById('habitat-clouds');
+  const layers = HABITAT_LAYERS[habitat.id];
+  if (bd && cld) {
+    if (layers) {
+      bd.style.backgroundImage  = `url('${layers.backdrop}')`;
+      cld.style.backgroundImage = `url('${layers.clouds}')`;
+      bd.classList.add('loaded');
+      cld.classList.add('loaded');
+    } else {
+      bd.classList.remove('loaded');
+      cld.classList.remove('loaded');
+    }
+  }
 }
 
 // ── Day / Night cycle ─────────────────────────────────────────────
