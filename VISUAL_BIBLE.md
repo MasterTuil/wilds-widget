@@ -159,20 +159,42 @@ Plus:
 
 ---
 
-## 8. THE BITFORGE WORKFLOW (Pixellab discipline)
+## 8. THE PIXELLAB PIPELINE (locked workflow)
 
-To enforce the bible across all generations:
+The MCP wrapper that's loaded by default has broken validation and exposes
+wrong field names. **Bypass it.** Use `tools/pixellab_skeleton.py` which
+calls the v1 REST API directly.
 
-1. **Generate one "anchor" character** (Vex final) with Pixellab Pixflux,
-   iterate until it nails every rule above.
-2. **Save anchor as the locked style reference.**
-3. **All future creatures use Pixellab Bitforge** with the anchor as
-   `style_image_path`, `style_strength: 85+`. This forces palette
-   discipline, outline rule, proportion match.
-4. **Rotations**: use `rotate` tool, never re-generate.
-5. **Animations**: use `animate_with_text` with `init_image_strength: 700+`
-   to prevent drift.
-6. **Reject any output that fails the silhouette test** (rule 4).
+### Per-creature workflow (turnkey)
+1. **Generate anchor** with Pixflux text-to-image. Iterate until the
+   bible rules pass. Save as `ANCHOR_LOCKED_south.png`.
+2. **Rotate the anchor** via the `rotate` endpoint to get
+   `ANCHOR_LOCKED_east.png`, `_northeast.png`, `_southeast.png`,
+   `_north.png` (rotations preserve identity).
+3. **Run the keyframe library** (`tools/pixellab_skeleton.py`) against
+   each rotated anchor. Outputs: 3-frame walks per direction + action
+   anims (eating / sad / training / sleeping).
+4. **Procedural for static states**: idle and happy stay as single-anchor
+   frames + code-driven bob/squash. Skeleton can't beat that for subtle
+   motion at small canvas sizes.
+5. **Sleeping needs a separate anchor** (lying/curled pose) — skeleton
+   can't fold a standing sprite. Future: generate `_sleep_anchor.png`
+   via Pixflux with explicit pose prompt.
+
+### Keyframe library (in `tools/pixellab_skeleton.py`)
+- `walk`: contact / passing / contact
+- `eating`: lean / chomp / lift
+- `sad`: droop / deeper droop / breath
+- `sleeping`: rest / inhale / rest (currently weak — see above)
+- `training`: ready / strike / recovery
+
+**Critical**: the API expects exactly **3 keyframes** per cycle. Server
+interpolates to smooth. Don't pass 4.
+
+### Field-name truth (the wrapper was lying)
+- Field: `skeleton_keypoints` (NOT `skeleton_frames`)
+- Shape: `array<array<keypoint>>` (flat list of frames)
+- Required: `image_size`, `reference_image: {type:"base64", base64:"..."}`
 
 ---
 

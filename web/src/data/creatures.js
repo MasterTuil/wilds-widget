@@ -99,11 +99,15 @@ export const CREATURES = {
       walk_northeast: ['assets/_v2/meadow/SKEL_walk_northeast_frame0.png','assets/_v2/meadow/SKEL_walk_northeast_frame1.png','assets/_v2/meadow/SKEL_walk_northeast_frame2.png'],
       walk_southeast: ['assets/_v2/meadow/SKEL_walk_southeast_frame0.png','assets/_v2/meadow/SKEL_walk_southeast_frame1.png','assets/_v2/meadow/SKEL_walk_southeast_frame2.png'],
       // West variants flip east diagonals automatically (see getWalkDir).
-      // Single anchor frame — procedural squash + sparkles supply ALL the motion.
-      // Zero sprite swap = zero visual chaos.
+      // Happy: anchor + procedural squash on pet. Don't fix what works.
       happy:     ['assets/_v2/meadow/ANCHOR_LOCKED_south.png'],
-      eating:    ['assets/_v2/meadow/eating_frame0.png','assets/_v2/meadow/eating_frame1.png','assets/_v2/meadow/eating_frame2.png','assets/_v2/meadow/eating_frame3.png'],
-      sad:       ['assets/_v2/meadow/sad_frame0.png','assets/_v2/meadow/sad_frame1.png','assets/_v2/meadow/sad_frame2.png','assets/_v2/meadow/sad_frame3.png'],
+      // Skeleton-driven action cycles (3 keyframes each, server interpolates).
+      eating:    ['assets/_v2/meadow/SKEL_eating_south_frame0.png','assets/_v2/meadow/SKEL_eating_south_frame1.png','assets/_v2/meadow/SKEL_eating_south_frame2.png'],
+      sad:       ['assets/_v2/meadow/SKEL_sad_south_frame0.png','assets/_v2/meadow/SKEL_sad_south_frame1.png','assets/_v2/meadow/SKEL_sad_south_frame2.png'],
+      training:  ['assets/_v2/meadow/SKEL_training_south_frame0.png','assets/_v2/meadow/SKEL_training_south_frame1.png','assets/_v2/meadow/SKEL_training_south_frame2.png'],
+      // Sleep: anchor only — skeleton can't fold a standing sprite into a lying pose.
+      // Would need a separately-generated 'curled' anchor. Procedural dim handles it for now.
+      sleep:     ['assets/_v2/meadow/ANCHOR_LOCKED_south.png'],
     },
     evolutionPaths: [
       { name: 'Bramble', prob: 0.50, hint: 'END dominant · Nature diet · The Meadow' },
