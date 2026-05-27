@@ -128,6 +128,23 @@ Don't be cheap with retries.
 - Expanded wander zone (creatures use full canvas vertical range)
 - Reduced foods to 3 (one per category) maps to 3 evolution branches
 
+### 🎯 NEXT SESSION'S LOCKED MANDATE (user, 2026-05-27)
+
+> "We do nothing else but get one good character going and make sure
+> the new godot looks and feels amazing."
+
+**ONE goal: ONE character end-to-end, AMAZING in the new Godot widget.**
+
+- The user will give you a new `character_id` from their Pixellab account.
+  That's the pipeline test — verify the workflow works on a fresh character,
+  not just Vex's already-wired case.
+- Polish the Godot HUD to Electron-version quality: glass chips with colored
+  bars, styled action pill buttons, IBM Plex Mono font, habitat-tinted glow.
+- Do NOT also wire other characters, build panels, or generate evolutions
+  this session. Scope is locked.
+
+Full detail in `../WILDS_godot/CLAUDE.md` (auto-loads when you open that folder).
+
 ### ⚡ MAJOR SHIFT: project moved to Godot
 
 The Electron prototype (this repo's `widget/`) is **frozen as legacy**.
