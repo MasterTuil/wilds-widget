@@ -189,16 +189,18 @@ function setAnim(name) {
   frameTimer   = 0;
 }
 
-// Returns { anim, flip } based on movement vector
+// Returns { anim, flip } based on movement vector.
+// Bible rule: west = flipped east. Only east + diagonals are generated;
+// west variants reuse east frames with horizontal flip.
 function getWalkDir(dx, dy) {
   const angle = Math.atan2(dy, dx) * (180 / Math.PI);
   if (angle > -22.5  && angle <=  22.5) return { anim: 'walk_east',      flip: false };
   if (angle >  22.5  && angle <=  67.5) return { anim: 'walk_southeast', flip: false };
   if (angle >  67.5  && angle <= 112.5) return { anim: 'walk_southeast', flip: false };
-  if (angle > 112.5  && angle <= 157.5) return { anim: 'walk_southwest', flip: false };
+  if (angle > 112.5  && angle <= 157.5) return { anim: 'walk_southeast', flip: true  };
   if (angle >  157.5 || angle <= -157.5)return { anim: 'walk_east',      flip: true  };
-  if (angle > -157.5 && angle <= -112.5)return { anim: 'walk_northwest', flip: false };
-  if (angle > -112.5 && angle <=  -67.5)return { anim: 'walk_northwest', flip: false };
+  if (angle > -157.5 && angle <= -112.5)return { anim: 'walk_northeast', flip: true  };
+  if (angle > -112.5 && angle <=  -67.5)return { anim: 'walk_northeast', flip: true  };
   if (angle >  -67.5 && angle <=  -22.5)return { anim: 'walk_northeast', flip: false };
   return { anim: 'walk_east', flip: false };
 }

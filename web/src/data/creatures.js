@@ -94,10 +94,9 @@ export const CREATURES = {
       idle_east: ['assets/_v2/meadow/ANCHOR_LOCKED_east.png'],
       idle_west: ['assets/_v2/meadow/ANCHOR_LOCKED_east.png'],
       walk_east:      ['assets/_v2/meadow/walk_east_frame0.png','assets/_v2/meadow/walk_east_frame1.png','assets/_v2/meadow/walk_east_frame2.png','assets/_v2/meadow/walk_east_frame3.png'],
-      walk_northeast: ['assets/_v2/meadow/walk_east_frame0.png','assets/_v2/meadow/walk_east_frame1.png','assets/_v2/meadow/walk_east_frame2.png','assets/_v2/meadow/walk_east_frame3.png'],
-      walk_southeast: ['assets/_v2/meadow/walk_east_frame0.png','assets/_v2/meadow/walk_east_frame1.png','assets/_v2/meadow/walk_east_frame2.png','assets/_v2/meadow/walk_east_frame3.png'],
-      walk_northwest: ['assets/_v2/meadow/walk_east_frame0.png','assets/_v2/meadow/walk_east_frame1.png','assets/_v2/meadow/walk_east_frame2.png','assets/_v2/meadow/walk_east_frame3.png'],
-      walk_southwest: ['assets/_v2/meadow/walk_east_frame0.png','assets/_v2/meadow/walk_east_frame1.png','assets/_v2/meadow/walk_east_frame2.png','assets/_v2/meadow/walk_east_frame3.png'],
+      walk_northeast: ['assets/_v2/meadow/walk_northeast_frame0.png','assets/_v2/meadow/walk_northeast_frame1.png','assets/_v2/meadow/walk_northeast_frame2.png','assets/_v2/meadow/walk_northeast_frame3.png'],
+      walk_southeast: ['assets/_v2/meadow/walk_southeast_frame0.png','assets/_v2/meadow/walk_southeast_frame1.png','assets/_v2/meadow/walk_southeast_frame2.png','assets/_v2/meadow/walk_southeast_frame3.png'],
+      // West variants flip east diagonals automatically (see getWalkDir).
       // Single anchor frame — procedural squash + sparkles supply ALL the motion.
       // Zero sprite swap = zero visual chaos.
       happy:     ['assets/_v2/meadow/ANCHOR_LOCKED_south.png'],
