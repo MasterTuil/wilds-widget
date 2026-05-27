@@ -88,26 +88,30 @@ export const CREATURES = {
       },
     },
     animations: {
-      // Single-frame idles — procedural breathing bob handles all motion.
-      // Fighting Pixellab's pose drift on multi-frame idles was the dance problem.
-      idle:      ['assets/_v2/meadow/ANCHOR_LOCKED_south.png'],
-      idle_east: ['assets/_v2/meadow/ANCHOR_LOCKED_east.png'],
-      idle_west: ['assets/_v2/meadow/ANCHOR_LOCKED_east.png'],
-      // Skeleton-driven walk cycles (3 keyframes each, real leg alternation).
-      // Generated via tools/pixellab_skeleton.py with locked anchor references.
-      walk_east:      ['assets/_v2/meadow/SKEL_walk_east_frame0.png','assets/_v2/meadow/SKEL_walk_east_frame1.png','assets/_v2/meadow/SKEL_walk_east_frame2.png'],
-      walk_northeast: ['assets/_v2/meadow/SKEL_walk_northeast_frame0.png','assets/_v2/meadow/SKEL_walk_northeast_frame1.png','assets/_v2/meadow/SKEL_walk_northeast_frame2.png'],
-      walk_southeast: ['assets/_v2/meadow/SKEL_walk_southeast_frame0.png','assets/_v2/meadow/SKEL_walk_southeast_frame1.png','assets/_v2/meadow/SKEL_walk_southeast_frame2.png'],
+      // ── Leafy v3: generated via official Pixellab MCP (character_id 4232a9d5...)
+      // 8-direction rotations + proper animations. See WILDS_HANDOFF.md pipeline.
+      idle:      ['assets/_v3/leafy/4232a9d5/rotations/south.png'],
+      idle_east: ['assets/_v3/leafy/4232a9d5/rotations/east.png'],
+      idle_west: ['assets/_v3/leafy/4232a9d5/rotations/east.png'],
+
+      // Walk cycles — 6 frames each, proper skeletal motion across all directions
+      walk_east:      ['assets/_v3/leafy/4232a9d5/animations/walking-82b18e0c/east/frame_000.png','assets/_v3/leafy/4232a9d5/animations/walking-82b18e0c/east/frame_001.png','assets/_v3/leafy/4232a9d5/animations/walking-82b18e0c/east/frame_002.png','assets/_v3/leafy/4232a9d5/animations/walking-82b18e0c/east/frame_003.png','assets/_v3/leafy/4232a9d5/animations/walking-82b18e0c/east/frame_004.png','assets/_v3/leafy/4232a9d5/animations/walking-82b18e0c/east/frame_005.png'],
+      walk_northeast: ['assets/_v3/leafy/4232a9d5/animations/walking-82b18e0c/north-east/frame_000.png','assets/_v3/leafy/4232a9d5/animations/walking-82b18e0c/north-east/frame_001.png','assets/_v3/leafy/4232a9d5/animations/walking-82b18e0c/north-east/frame_002.png','assets/_v3/leafy/4232a9d5/animations/walking-82b18e0c/north-east/frame_003.png','assets/_v3/leafy/4232a9d5/animations/walking-82b18e0c/north-east/frame_004.png','assets/_v3/leafy/4232a9d5/animations/walking-82b18e0c/north-east/frame_005.png'],
+      walk_southeast: ['assets/_v3/leafy/4232a9d5/animations/walking-82b18e0c/south-east/frame_000.png','assets/_v3/leafy/4232a9d5/animations/walking-82b18e0c/south-east/frame_001.png','assets/_v3/leafy/4232a9d5/animations/walking-82b18e0c/south-east/frame_002.png','assets/_v3/leafy/4232a9d5/animations/walking-82b18e0c/south-east/frame_003.png','assets/_v3/leafy/4232a9d5/animations/walking-82b18e0c/south-east/frame_004.png','assets/_v3/leafy/4232a9d5/animations/walking-82b18e0c/south-east/frame_005.png'],
       // West variants flip east diagonals automatically (see getWalkDir).
-      // Happy: anchor + procedural squash on pet. Don't fix what works.
-      happy:     ['assets/_v2/meadow/ANCHOR_LOCKED_south.png'],
-      // Skeleton-driven action cycles (3 keyframes each, server interpolates).
-      eating:    ['assets/_v2/meadow/SKEL_eating_south_frame0.png','assets/_v2/meadow/SKEL_eating_south_frame1.png','assets/_v2/meadow/SKEL_eating_south_frame2.png'],
-      sad:       ['assets/_v2/meadow/SKEL_sad_south_frame0.png','assets/_v2/meadow/SKEL_sad_south_frame1.png','assets/_v2/meadow/SKEL_sad_south_frame2.png'],
-      training:  ['assets/_v2/meadow/SKEL_training_south_frame0.png','assets/_v2/meadow/SKEL_training_south_frame1.png','assets/_v2/meadow/SKEL_training_south_frame2.png'],
-      // Sleep: anchor only — skeleton can't fold a standing sprite into a lying pose.
-      // Would need a separately-generated 'curled' anchor. Procedural dim handles it for now.
-      sleep:     ['assets/_v2/meadow/ANCHOR_LOCKED_south.png'],
+
+      // Happy: anchor + procedural squash. Don't generate what code does better.
+      happy:     ['assets/_v3/leafy/4232a9d5/rotations/south.png'],
+
+      // Action cycles (5 frames each, MCP-generated with proper poses)
+      sad:       ['assets/_v3/leafy/4232a9d5/animations/sad_head_droop_sorrowful-6424d040/south/frame_000.png','assets/_v3/leafy/4232a9d5/animations/sad_head_droop_sorrowful-6424d040/south/frame_001.png','assets/_v3/leafy/4232a9d5/animations/sad_head_droop_sorrowful-6424d040/south/frame_002.png','assets/_v3/leafy/4232a9d5/animations/sad_head_droop_sorrowful-6424d040/south/frame_003.png','assets/_v3/leafy/4232a9d5/animations/sad_head_droop_sorrowful-6424d040/south/frame_004.png'],
+      training:  ['assets/_v3/leafy/4232a9d5/animations/training_combat_stance_jab-5b87283d/south/frame_000.png','assets/_v3/leafy/4232a9d5/animations/training_combat_stance_jab-5b87283d/south/frame_001.png','assets/_v3/leafy/4232a9d5/animations/training_combat_stance_jab-5b87283d/south/frame_002.png','assets/_v3/leafy/4232a9d5/animations/training_combat_stance_jab-5b87283d/south/frame_003.png','assets/_v3/leafy/4232a9d5/animations/training_combat_stance_jab-5b87283d/south/frame_004.png'],
+
+      // Real lying pose — official MCP nailed what skeleton couldn't
+      sleep:     ['assets/_v3/leafy/4232a9d5/animations/sleeping_curled_up_resting_on_the_ground-c7c9cf8e/south/frame_000.png','assets/_v3/leafy/4232a9d5/animations/sleeping_curled_up_resting_on_the_ground-c7c9cf8e/south/frame_001.png','assets/_v3/leafy/4232a9d5/animations/sleeping_curled_up_resting_on_the_ground-c7c9cf8e/south/frame_002.png','assets/_v3/leafy/4232a9d5/animations/sleeping_curled_up_resting_on_the_ground-c7c9cf8e/south/frame_003.png','assets/_v3/leafy/4232a9d5/animations/sleeping_curled_up_resting_on_the_ground-c7c9cf8e/south/frame_004.png'],
+
+      // Eating: currently re-queued — falls back to idle until next download.
+      eating:    ['assets/_v3/leafy/4232a9d5/rotations/south.png'],
     },
     evolutionPaths: [
       { name: 'Bramble', prob: 0.50, hint: 'END dominant · Nature diet · The Meadow' },
