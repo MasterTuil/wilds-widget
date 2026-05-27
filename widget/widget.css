@@ -772,19 +772,42 @@ html, body {
   transition: background 0.3s;
 }
 
-/* ── Mood bubble ──────────────────────────────────────── */
+/* ── Mood bubble (text glyph, pill shape) ─────────────── */
 #mood-bubble {
   position:    absolute;
-  bottom:      180px;
+  bottom:      176px;
   left:        50%;
   transform:   translateX(-50%);
-  font-size:   16px;
+  display:     flex;
+  align-items: center;
+  justify-content: center;
+  min-width:   18px;
+  height:      18px;
+  padding:     0 6px;
+  background:  rgba(10, 8, 24, 0.88);
+  border:      1px solid rgba(155, 127, 212, 0.35);
+  border-radius: 9px;
+  backdrop-filter: blur(6px);
+  font-size:   10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  line-height: 1;
+  color:       rgba(220, 205, 255, 0.95);
   z-index:     20;
   pointer-events: none;
-  transition:  opacity 0.4s;
+  transition:  opacity 0.35s, transform 0.35s;
 }
 
-#mood-bubble.hidden { opacity: 0; }
+#mood-bubble.hidden { opacity: 0; transform: translateX(-50%) translateY(4px); }
+
+#mood-bubble.mood-sleep    { font-style: italic; color: rgba(200, 200, 255, 0.85); }
+#mood-bubble.mood-seeking  { color: #f0c040; border-color: rgba(240, 192, 64, 0.55); }
+#mood-bubble.mood-critical { color: #ff8c8c; border-color: rgba(224, 85, 85, 0.65); animation: bubble-pulse 1s ease-in-out infinite; }
+
+@keyframes bubble-pulse {
+  0%, 100% { transform: translateX(-50%) scale(1);    }
+  50%      { transform: translateX(-50%) scale(1.12); }
+}
 
 /* ── Toast ────────────────────────────────────────────── */
 #widget-toast {

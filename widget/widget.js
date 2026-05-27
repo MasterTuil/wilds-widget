@@ -213,13 +213,17 @@ function updateNeedDots(state) {
 }
 
 // ── Mood bubble ───────────────────────────────────────────────────
-const MOOD_EMOJIS = { sad: '💤', critical: '😰', seeking: '!' };
+const MOOD_GLYPHS = {
+  sad:      { text: 'z',  cls: 'mood-sleep'    },
+  critical: { text: '!!', cls: 'mood-critical' },
+  seeking:  { text: '!',  cls: 'mood-seeking'  },
+};
 
 function updateMoodBubble(mood) {
   const el = document.getElementById('mood-bubble');
-  const em = MOOD_EMOJIS[mood] || '';
-  el.textContent = em;
-  el.classList.toggle('hidden', !em);
+  const m  = MOOD_GLYPHS[mood];
+  el.className = 'mood-bubble' + (m ? ' ' + m.cls : ' hidden');
+  el.textContent = m ? m.text : '';
 }
 
 // ── Stats panel ───────────────────────────────────────────────────
@@ -727,7 +731,7 @@ function onPet() {
   triggerFX('pet');
   setAnim('happy');
   spawnSparkles();
-  showToast(`${creature.name.toUpperCase()} LOVES THE ATTENTION! ✨`);
+  showToast(`${creature.name.toUpperCase()} LOVES THE ATTENTION`);
   setTimeout(() => setAnim(idleAnim()), 3500);
   saveState();
   closePanel();
@@ -852,7 +856,7 @@ function awardXP(amount) {
       lvlEl.classList.remove('leveled-up');
       barEl.classList.remove('leveled-up');
     }, 900);
-    showToast(`⬆ LEVEL UP! ${creature.name.toUpperCase()} IS NOW LVL ${result.newLevel}!`);
+    showToast(`LEVEL UP — ${creature.name.toUpperCase()} IS NOW LVL ${result.newLevel}`);
   }
   return result;
 }
