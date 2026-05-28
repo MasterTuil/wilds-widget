@@ -28,7 +28,7 @@ import urllib.request
 import urllib.error
 
 MCP_URL = "https://api.pixellab.ai/mcp"
-TOKEN = os.environ.get("PIXELLAB_TOKEN") or "45a89bb4-9b6e-4110-9755-943a59b453f5"
+TOKEN = os.environ.get("PIXELLAB_TOKEN") or "341f1c36-907b-4dc2-8e35-760f87ba90bd"
 
 _session_id_holder = {"id": None}
 _rpc_id = {"n": 0}
@@ -177,6 +177,18 @@ def cmd_action(character_id: str, action: str, anim_name: str):
     print(json.dumps(res, indent=2))
 
 
+def cmd_state(character_id: str, edit_description: str, lock_palette: bool = False):
+    """Queue a state/variant of an existing character (evolution, pose, costume)."""
+    initialize()
+    args = {
+        "character_id": character_id,
+        "edit_description": edit_description,
+        "use_color_palette_from_reference": lock_palette,
+    }
+    res = tool_call("create_character_state", args)
+    print(json.dumps(res, indent=2))
+
+
 def cmd_list():
     initialize()
     res = tool_call("list_characters", {"limit": 20})
@@ -223,6 +235,9 @@ if __name__ == "__main__":
         cmd_template(sys.argv[2], sys.argv[3], sys.argv[4] if len(sys.argv) > 4 else "south")
     elif cmd == "action":
         cmd_action(sys.argv[2], sys.argv[3], sys.argv[4])
+    elif cmd == "state":
+        lock = len(sys.argv) > 4 and sys.argv[4] == "--lock-palette"
+        cmd_state(sys.argv[2], sys.argv[3], lock_palette=lock)
     elif cmd == "list":
         cmd_list()
     elif cmd == "download":

@@ -81,6 +81,30 @@ pushed back on the tier-locked claim and that's what unblocked the session.
 
 ---
 
+## Evolution pipeline — PROVEN 2026-05-27
+
+`create_character_state` is the evolution primitive. Confirmed working.
+
+**Division of labor:**
+- **User** builds Stage 1 in Pixellab dashboard image-copier (with reference art). Gets `character_id`.
+- **Claude** runs Stage 2 + Stage 3 via `python3 tools/pixellab_mcp.py state <id> "<edit>"`. ~3 min each. No references needed. Same chibi proportions + 8-direction consistency preserved. New `character_id` returned, linked via `group_id`.
+
+**Working example — Fire Demon line (group `72bf5731-feee-40a8-9251-1bec26ae1d07`):**
+
+| Stage | character_id | Edit prompt | Result |
+|---|---|---|---|
+| 1 | `e6d42752-9a43-4a7d-83e7-8f4c436f3155` | (user, image-copier) | Red flame-head imp |
+| 2 | `a37e32c7-cee2-43e1-ab1e-42b1a1801790` | "evolved form: taller, charred black skin with glowing molten cracks, larger flame crown, jagged obsidian horns" | Darker armored mid-form |
+| 3 | `f10c821d-7843-4a37-8751-f5f171314c1c` | "apex form: massive demon lord, towering frame, outstretched fiery wings, vortex flame crown, molten lava veins, broken obsidian crown, clawed fists wreathed in fire" | Winged demon lord |
+
+**Lessons from this chain:**
+- Don't set `use_color_palette_from_reference=true` when introducing new colors (charring, glow). Default `false` works.
+- Edit prompts should add **structural changes** (wings, horns, size) — not just recolors. Silhouette evolution > palette evolution.
+- Chain depth works: Stage 3 was generated from Stage 2's ID, not Stage 1's. DNA holds across multiple state hops.
+- Each `state` call returns immediately with new ID; poll with `status <id>` until `completed`. Backblaze rotation URLs are then live at `https://backblaze.pixellab.ai/file/pixellab-characters/<account>/<character_id>/rotations/<dir>.png`.
+
+---
+
 ## The Pipeline (the WORKING way to make a creature)
 
 ```
@@ -287,19 +311,7 @@ If new operations prompt for permission, add them to that file's
 
 ## Security
 
-⚠ **Pixellab Bearer token (`45a89bb4-9b6e-4110-9755-943a59b453f5`) is
-exposed multiple times**:
-- In screenshots the user shared during the session
-- In `.claude/settings.local.json` curl patterns (plain text)
-- In `claude_desktop_config.json` npx wrapper args
-- In `~/.claude/settings.json` mcpServers.pixellab.headers
-
-**Rotate this token from the Pixellab dashboard** when you have 5 minutes.
-After rotating, update:
-1. `~/.claude/settings.json` → `mcpServers.pixellab.headers.Authorization`
-2. `tools/pixellab_mcp.py` → `TOKEN` fallback default
-3. `tools/pixellab_skeleton.py` → `TOKEN` fallback default
-4. Remove old token references from `.claude/settings.local.json`
+Pixellab Bearer token rotated 2026-05-27 (verified via `/v1/balance` HTTP 200). Never paste tokens into chat, screenshots, or commits.
 
 ---
 

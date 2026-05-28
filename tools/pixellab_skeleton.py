@@ -19,7 +19,7 @@ import urllib.request
 import urllib.error
 
 API = "https://api.pixellab.ai/v1/animate-with-skeleton"
-TOKEN = os.environ.get("PIXELLAB_TOKEN") or "45a89bb4-9b6e-4110-9755-943a59b453f5"
+TOKEN = os.environ.get("PIXELLAB_TOKEN") or "341f1c36-907b-4dc2-8e35-760f87ba90bd"
 
 # KEYFRAME LIBRARY
 # ----------------
