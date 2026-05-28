@@ -19,7 +19,20 @@ import urllib.request
 import urllib.error
 
 API = "https://api.pixellab.ai/v1/animate-with-skeleton"
-TOKEN = os.environ.get("PIXELLAB_TOKEN") or "341f1c36-907b-4dc2-8e35-760f87ba90bd"
+def _load_token():
+    tok = os.environ.get("PIXELLAB_TOKEN")
+    if tok:
+        return tok
+    cfg = os.path.expanduser("~/.claude/settings.json")
+    try:
+        with open(cfg) as f:
+            data = json.load(f)
+        auth = data["mcpServers"]["pixellab"]["headers"]["Authorization"]
+        return auth.split(" ", 1)[1] if auth.lower().startswith("bearer ") else auth
+    except Exception:
+        sys.exit("error: PIXELLAB_TOKEN not set and ~/.claude/settings.json missing pixellab Authorization header.")
+
+TOKEN = _load_token()
 
 # KEYFRAME LIBRARY
 # ----------------
