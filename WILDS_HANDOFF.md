@@ -1,10 +1,86 @@
 # WILDS — Session Handoff
 
-Last updated: 2026-05-27 (multi-session: foundation + visual bible + skeleton + MCP debug)
+Last updated: 2026-05-27 (multi-session: foundation + visual bible + skeleton + MCP debug + **hooks-and-godot-repo**)
 
 > **Context for next Claude session:** read this top-to-bottom **and**
 > `VISUAL_BIBLE.md` before doing anything. Then `cat WILDS_BRIEF.md` for
 > the technical baseline.
+
+---
+
+## 🆕 Session 2026-05-27 (late) — hooks wired + Godot repo created
+
+The user got tired of fresh Claudes ignoring documented rules, so we
+converted the prose rules in `CLAUDE.md` into **mechanical hooks**.
+Then we discovered the Godot folder had no GitHub remote and fixed that.
+
+### Hooks live in both projects
+
+`.claude/settings.json` + `.claude/hooks/*.sh` exist in BOTH:
+- `WILDS GAME/.claude/` (Electron legacy repo — committed)
+- `WILDS_godot/.claude/` (Godot production — **gitignored, personal**)
+
+Scripts are portable (use `$CLAUDE_PROJECT_DIR`, sniff sibling for
+`WILDS_HANDOFF.md`). Three hooks:
+
+1. **PreToolUse** — `block-pixellab-creation.sh` exits 2 to block:
+   - `mcp__pixellab__generate_image_pixflux`
+   - `mcp__pixellab__generate_image_bitforge`
+   - `mcp__pixellab__animate_with_text` (drift)
+   - `mcp__pixellab__rotate` (skinny chibi at 90°)
+
+   Allowed: `animate_with_skeleton`, `estimate_skeleton`, `inpaint`, `get_balance`.
+   Rationale: user now designs sprites in the **Pixellab dashboard
+   image-copier** (reference images → character_id). Claude only does
+   animation bulk via `tools/pixellab_mcp.py`.
+
+2. **SessionStart** — `session-start.sh` injects `git log --oneline -5` +
+   first **200 lines** of `WILDS_HANDOFF.md` (200, not 100 — the locked
+   mandate is at line ~131, character roster at ~174) + "production is
+   Godot" reminder. Works from either project.
+
+3. **Stop** — `commit-reminder.sh` soft-reminds if working tree dirty.
+   No auto-push. Prints actual `git remote get-url origin` so the
+   reminder URL is correct in each repo.
+
+### Godot got its own GitHub repo
+
+- **https://github.com/MasterTuil/wilds-godot** (private, `MasterTuil`)
+- Created with `gh repo create wilds-godot --private --source ... --push`
+- `main` tracks `origin/main`
+- `.gitignore` updated to exclude `.claude/` (personal hook config)
+- One commit on top of the initial push: "Ignore .claude/ — personal hook config, not shared tooling"
+- ⚠️ Git committer auto-detected as `Jonathan Tuil <tuil@Mac.lan>`.
+  If you want GitHub to attribute commits to your account:
+  `git config --global user.email <github-email>`
+
+### Repo split — remember this
+
+| Repo | Path | Status |
+|---|---|---|
+| `wilds-widget` | `WILDS GAME/` (this repo) | **LEGACY**, Electron, frozen |
+| `wilds-godot`  | `WILDS_godot/` (sibling)   | **PRODUCTION**, Godot 4.6.3 |
+
+Per the 2026-05-27 mandate: don't touch the Electron version unless
+explicitly asked. Active work happens in `../WILDS_godot/`.
+
+### CLAUDE.md updates this session
+
+- Added legacy banner at top of `WILDS GAME/CLAUDE.md`
+- Strikethrough'd the old "use `tools/pixellab_mcp.py create`"
+  instruction; added 2026-05-27 note that user uses dashboard
+  image-copier and AI runs animation pipeline only
+- Added "Enforced hooks" section listing what's mechanically gated
+- SessionStart hook now auto-runs the "Quick state check" prose
+  block, so that section in CLAUDE.md was simplified to a pointer
+
+### What did NOT get done
+
+- Hooks not yet copied to any other TUIL Studios sibling project
+- The `mcp__pixellab__animate_with_skeleton` wrapper is allowed but
+  documented as buggy (wrong field names, mangled errors per the
+  "wrapper trap" lessons). Prefer `python3 tools/pixellab_mcp.py action`.
+- No hook tests beyond manual verification (no CI for the hooks themselves)
 
 ---
 
