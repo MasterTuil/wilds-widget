@@ -97,7 +97,22 @@ pushed back on the tier-locked claim and that's what unblocked the session.
 | 2 | `a37e32c7-cee2-43e1-ab1e-42b1a1801790` | "evolved form: taller, charred black skin with glowing molten cracks, larger flame crown, jagged obsidian horns" | Darker armored mid-form |
 | 3 | `f10c821d-7843-4a37-8751-f5f171314c1c` | "apex form: massive demon lord, towering frame, outstretched fiery wings, vortex flame crown, molten lava veins, broken obsidian crown, clawed fists wreathed in fire" | Winged demon lord |
 
-**Lessons from this chain:**
+**State vs animation — when to use which (tested 2026-05-27):**
+
+Ran A/B on the fire demon: `state` vs `action_description` animation for both "sitting cross-legged" and "lying down asleep". State won both decisively.
+
+| Scenario | Animation result | State result |
+|---|---|---|
+| Sit cross-legged | Still standing upright, slight bob. Reads as idle. | Actually folded legs on ground. Reads instantly. |
+| Lying down asleep | Still standing, just dims/glows. | Fully horizontal, curled on side. |
+
+**Rule:** if the pose's silhouette stays roughly vertical (walk, breathe, punch, wave) → use animation. If the silhouette fundamentally rearranges (sit, lie down, kneel, curl) → use state. The animation skeleton can't fold a standing sprite onto its side.
+
+This means in WILDS: **sleeping must be a state sprite, not a generated anim loop.** Same for sitting if we want it to read clearly. State sprites are 8 rotations of a static pose — pair with procedural breathing/squash for motion.
+
+Test outputs: `web/assets/_v3/test_states/` — state_sit_south.png, state_sleep_south.png, anim_sit_*.png, anim_sleep_*.png.
+
+**Lessons from the evolution chain:**
 - Don't set `use_color_palette_from_reference=true` when introducing new colors (charring, glow). Default `false` works.
 - Edit prompts should add **structural changes** (wings, horns, size) — not just recolors. Silhouette evolution > palette evolution.
 - Chain depth works: Stage 3 was generated from Stage 2's ID, not Stage 1's. DNA holds across multiple state hops.

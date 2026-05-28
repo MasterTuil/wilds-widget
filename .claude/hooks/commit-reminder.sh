@@ -3,17 +3,19 @@
 # Outputs a system message via stdout (does not block).
 
 set -euo pipefail
-cd "/Users/tuil/Desktop/TUIL Studios/WILDS GAME"
+PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$(pwd)}"
+cd "$PROJECT_DIR"
 
 if ! git rev-parse --git-dir >/dev/null 2>&1; then
   exit 0
 fi
 
-# Any uncommitted changes (staged, unstaged, or untracked)?
 if [ -n "$(git status --porcelain 2>/dev/null)" ]; then
+  REMOTE="$(git remote get-url origin 2>/dev/null || echo '(no origin remote)')"
   cat <<EOF
-REMINDER: uncommitted changes in WILDS GAME. Per CLAUDE.md, commit + push
-to https://github.com/MasterTuil/wilds-widget after meaningful changes.
+REMINDER: uncommitted changes in $(basename "$PROJECT_DIR").
+Per CLAUDE.md, commit + push after meaningful changes.
+Origin: $REMOTE
 Do NOT auto-push without user confirmation — just remind, then ask.
 
   git status
