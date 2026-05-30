@@ -1,0 +1,24 @@
+{
+  "species": "fire_demon",
+  "group_id": "72bf5731-feee-40a8-9251-1bec26ae1d07",
+  "stages": {
+    "stage1": {
+      "idle": "e6d42752-9a43-4a7d-83e7-8f4c436f3155",
+      "sit":  "3169bdc7-41e3-42ef-99d9-f5a082d5b996",
+      "sleep":"92fc83a4-fe54-4e68-b9d4-7b41a4bcfa23",
+      "sad":  "354193eb-393c-4fa9-a90e-f3a52e8b49f6"
+    },
+    "stage2": {
+      "idle": "a37e32c7-cee2-43e1-ab1e-42b1a1801790",
+      "sit":  "1514a3a9-9b7b-494c-8313-3c7e51b90adc",
+      "sleep":"7553bf75-6b17-4890-9a98-564266f9f17f",
+      "sad":  "28b09cf6-d559-4f7b-b8bb-4a40d19553cd"
+    },
+    "stage3": {
+      "idle": "f10c821d-7843-4a37-8751-f5f171314c1c",
+      "sit":  "b0ea2578-d1ed-4bab-8c43-92e1709da393",
+      "sleep":"c5ca2db2-e718-4768-a99b-e272fc5afeec",
+      "sad":  "b1ca404d-0738-42fb-b162-1f68ec05e751"
+    }
+  }
+}

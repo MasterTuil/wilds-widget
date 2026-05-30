@@ -1,10 +1,110 @@
 # WILDS — Session Handoff
 
-Last updated: 2026-05-27 (multi-session: foundation + visual bible + skeleton + MCP debug + **hooks-and-godot-repo**)
+Last updated: 2026-05-28 (Opus 4.7 → handing to **Opus 4.8** mid kit-out)
 
 > **Context for next Claude session:** read this top-to-bottom **and**
 > `VISUAL_BIBLE.md` before doing anything. Then `cat WILDS_BRIEF.md` for
 > the technical baseline.
+
+---
+
+## 🚦 RESUME HERE — Opus 4.8 pick-up point (2026-05-28)
+
+**Where we are:** Mid kit-out of the **Fire Demon** species. Evolution
+pipeline (`create_character_state`) is proven across two creatures. The
+**state vs animation rule** is locked (see Evolution pipeline section).
+
+**In-flight when the previous session ended:**
+
+7 fire demon state variants were queued in parallel and are polling in
+a background bash job (`b11whxw4k`). When new session opens, check:
+
+```bash
+cat web/assets/_v3/fire_demon_manifest.json
+# Verify all 11 IDs return "completed":
+export PIXELLAB_TOKEN=$(python3 -c "import json; print(json.load(open('$HOME/.claude/settings.json'))['mcpServers']['pixellab']['headers']['Authorization'].replace('Bearer ',''))")
+python3 tools/pixellab_mcp.py status <id>
+```
+
+The 7 new IDs that were processing:
+- S1 sad `354193eb-393c-4fa9-a90e-f3a52e8b49f6`
+- S2 sit `1514a3a9-9b7b-494c-8313-3c7e51b90adc`
+- S2 sleep `7553bf75-6b17-4890-9a98-564266f9f17f`
+- S2 sad `28b09cf6-d559-4f7b-b8bb-4a40d19553cd`
+- S3 sit `b0ea2578-d1ed-4bab-8c43-92e1709da393`
+- S3 sleep `c5ca2db2-e718-4768-a99b-e272fc5afeec`
+- S3 sad `b1ca404d-0738-42fb-b162-1f68ec05e751`
+
+**Once all states are completed, the immediate next steps are:**
+
+1. Download all rotations → `web/assets/_v3/fire_demon_<stage>_<state>/`
+   (loop over directions south/east/north/west/{south,north}-{east,west})
+2. Show the user the family tree side-by-side. Sanity check the sad/sit/sleep
+   poses came out right.
+3. Queue **animations on the states**:
+   - Walk on every `idle` state (8-direction)
+   - Breathing on every `sleep` state (south only)
+   - Idle bob is procedural in Godot, **don't generate it**
+4. After fire demon kits out cleanly → **switch to Vex audit**. User said
+   "do fire first then we filter what we have and dont have on vex cause
+   i have some thing for him set right." So don't blindly fan out states
+   on Vex — wait for direction.
+
+**Vex Stage 2** was already generated and validated mid-session:
+`79570a03-8eb1-4d98-99ca-b74882267eec` (taller ears, wispy spirit-flame tail).
+Stage 3 not queued yet — user wanted to see it ("curious how the third
+will look haha") but redirected to finish fire demon first.
+
+**Locked mandate still applies** (see CLAUDE.md): ONE character end-to-end
+amazing in Godot. The kit-out work is in service of that — once fire demon
+has full state coverage, wire him into Godot as the production hero
+character (replacing Vex as the locked-mandate creature, or alongside).
+
+**Behavioral reminders for Opus 4.8:**
+- When user shares ONE thing, respond to THAT thing. No inventory-style "hauls."
+- If wrong, retract without ceremony. Don't spin.
+- States > animations for any pose that rearranges the silhouette.
+  Don't fall back to "let's animate a sleep loop" — generate a sleep
+  state and put breathing on it.
+- Token must come from env (`PIXELLAB_TOKEN`), no hardcoded fallback.
+
+---
+
+## 🆕 Session 2026-05-28 — evolution pipeline proven + state vs anim rule
+
+### What landed this session
+
+1. **Added `cmd_state` to `tools/pixellab_mcp.py`** — wraps
+   `create_character_state` from the high-level MCP. Returns new
+   character_id linked to source via group_id.
+2. **Proved 3-stage evolution chain on Fire Demon** (group
+   `72bf5731-feee-40a8-9251-1bec26ae1d07`): imp → charred mid-form →
+   winged demon lord. All 8 rotations consistent across stages. ~3 min
+   per state, $0.
+3. **Proved chain works on Vex too** (`79570a03`) — different creature
+   built via different workflow (image-copier reference), pipeline is
+   creature-agnostic.
+4. **State-vs-animation A/B test** on fire demon for sit + sleep:
+   states won decisively. Animation can't fold a vertical sprite onto
+   its side. Rule documented in the Evolution Pipeline section below.
+5. **Queued 7 more fire demon states** (sad on S1; sit/sleep/sad on
+   S2 + S3) — polling in background when session compacted.
+6. **Manifest file** at `web/assets/_v3/fire_demon_manifest.json` —
+   single source of truth for the fire demon family tree.
+
+### Strategic shift unlocked
+
+Each state has its own skeleton → each state gets its own animations.
+The sleep state isn't static — it gets a "gentle breathing" animation
+on top. Sit state gets tail flick. Apex state gets wing flaps.
+
+Math: each creature is now (3 stages × 4 states × N anims). One source
+sprite generates hundreds of unique frames. Pipeline:
+
+- **User**: Stage 1 in image-copier (reference-based)
+- **Claude**: states (Stage 2/3, sit, sleep, sad) via `state` cmd
+- **Claude**: animations on each state via `action` cmd
+- **Godot**: procedural breathing/squash on top
 
 ---
 
